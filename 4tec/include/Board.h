@@ -4,10 +4,15 @@
 #include <array>
 #include <bitset>
 #include <cstdint>
+#include <iostream> // <-- REMOVE AFTER TESTING
 
 class Board
 {
 public:
+<<<<<<< HEAD
+=======
+
+>>>>>>> Added checks for wins in all directions, added TEMPORARY cin input for testing, removed unnecessary bufferMask
 	Board();
 
 	/// <summary>
