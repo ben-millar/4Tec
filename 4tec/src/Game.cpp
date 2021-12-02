@@ -6,6 +6,7 @@ void Game::run()
 	m_window->setKeyRepeatEnabled(false);
 
 	loadFont();
+	loadTextures();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -44,6 +45,14 @@ void Game::loadFont()
 
 ////////////////////////////////////////////////////////////
 
+void Game::loadTextures()
+{
+	m_boardTexture.loadFromFile("assets/images/board.png");
+	m_boardSprite.setTexture(m_boardTexture);
+}
+
+////////////////////////////////////////////////////////////
+
 void Game::processEvents()
 {
 	sf::Event e;
@@ -75,6 +84,28 @@ void Game::render()
 {
 	m_window->clear(sf::Color::Black);
 
+	// REMOVE AFTER TESTING
+	// ********************
+
+	std::string input;
+	std::cin >> input;
+
+	vector<int> result;
+	stringstream ss(input);
+
+	while (ss.good())
+	{
+		string substr;
+		getline(ss, substr, ',');
+		result.push_back(stoi(substr));
+	}
+
+	cout << m_board.makeMove(result[0], result[1], result[2]) << endl;
+
+	// ********************
+	// ********************
+
+	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
 
 	m_window->display();
@@ -84,5 +115,5 @@ void Game::render()
 
 sf::RenderWindow* Game::createWindow(std::string t_title)
 {
-	return new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), t_title, sf::Style::Fullscreen);
+	return new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), t_title);
 }

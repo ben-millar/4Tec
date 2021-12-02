@@ -47,4 +47,9 @@
       <Filter>Resource Files\Fonts</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\images\board.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
