@@ -28,7 +28,7 @@ Board::Board()
 
 bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 {
-	if (layer >= _validLayers || row >= _validRows || col >= _validCols)
+	 if (layer >= _validLayers || row >= _validRows || col >= _validCols)
 		return false;
 
 	// E.g., 1/1/1 = 1(16) + 1(4) + 1 = 21
@@ -47,7 +47,7 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		_board.set(index, true);
 
 		if (checkForWin())
-			std::cout << "WINNER WINNER CHICKEN DINNER" << std::endl;
+			// **************** DO SOMETHING HERE ****************
 
 		return true;
 	}

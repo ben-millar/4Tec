@@ -4,7 +4,6 @@
 #include <array>
 #include <bitset>
 #include <cstdint>
-#include <iostream> // <-- REMOVE AFTER TESTING
 
 class Board
 {

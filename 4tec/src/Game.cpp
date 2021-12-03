@@ -84,27 +84,6 @@ void Game::render()
 {
 	m_window->clear(sf::Color::Black);
 
-	// REMOVE AFTER TESTING
-	// ********************
-
-	std::string input;
-	std::cin >> input;
-
-	vector<int> result;
-	stringstream ss(input);
-
-	while (ss.good())
-	{
-		string substr;
-		getline(ss, substr, ',');
-		result.push_back(stoi(substr));
-	}
-
-	cout << m_board.makeMove(result[0], result[1], result[2]) << endl;
-
-	// ********************
-	// ********************
-
 	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
 
