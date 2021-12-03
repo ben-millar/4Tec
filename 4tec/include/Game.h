@@ -51,6 +51,8 @@ public:
 
 private:
 
+	std::tuple<int, int, int> calculateBoardPiece(sf::Vector2i t_mousePos);
+
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
 	/// </summary>
