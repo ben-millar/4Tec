@@ -1,8 +1,16 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <vector>
+#include <iostream>
+#include <sstream>
+
 #include <SFML/Graphics.hpp>
+
+#include <Board.h>
 #include <Globals.h>
+
+using namespace std;
 
 class Game
 {
@@ -19,6 +27,11 @@ public:
 	/// Loads in fonts from file
 	/// </summary>
 	void loadFont();
+
+	/// <summary>
+	/// Loads in and assigns textures
+	/// </summary>
+	void loadTextures();
 
 	/// <summary>
 	/// Handles system events (input, etc.)
@@ -48,6 +61,11 @@ private:
 
 	sf::Font m_robotoTTF;
 	sf::Text m_text;
+
+	sf::Texture m_boardTexture;
+	sf::Sprite m_boardSprite;
+
+	Board m_board;
 };
 
 #endif
