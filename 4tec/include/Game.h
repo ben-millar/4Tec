@@ -51,7 +51,10 @@ public:
 
 private:
 
-	std::tuple<int, int, int> calculateBoardPiece(sf::Vector2i t_mousePos);
+	std::tuple<uint8_t, uint8_t, uint8_t> calculateBoardPiece(sf::Vector2i t_mousePos);
+
+	uint8_t getRow(float t_levelPct);
+
 
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
