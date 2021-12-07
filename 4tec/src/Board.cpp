@@ -27,6 +27,8 @@ Board::Board()
 		uint8_t(down + DL),
 		uint8_t(down - DL)
 	};
+
+	loadWinningLines();
 }
 
 ////////////////////////////////////////////////////////////
@@ -63,6 +65,13 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 
 ////////////////////////////////////////////////////////////
 
+int Board::evaluate()
+{
+	return 0;
+}
+
+////////////////////////////////////////////////////////////
+
 bool Board::checkForWin()
 {
 	// Last player
@@ -79,4 +88,22 @@ bool Board::checkForWin()
 	}
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void Board::loadWinningLines()
+{
+	std::string file_path = "assets/data/winning_lines.txt", line;
+	std::ifstream input(file_path.c_str(), std::ifstream::in);
+
+	if (input.is_open())
+		std::perror("Error opening file in Board.cpp");
+
+	int i = 0;
+
+	while (std::getline(input, line))
+		_winningLines.at(i++) = new std::bitset<4*5*5>{ line.c_str() };
+
+	input.close();
 }
