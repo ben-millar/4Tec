@@ -9,6 +9,7 @@
 
 #include <Board.h>
 #include <Globals.h>
+#include <Input.h>
 
 using namespace std;
 
@@ -51,10 +52,6 @@ public:
 
 private:
 
-	std::tuple<uint8_t, uint8_t, uint8_t> calculateBoardPiece(sf::Vector2i t_mousePos);
-
-	uint8_t getRow(float t_levelPct);
-
 
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
@@ -71,6 +68,7 @@ private:
 	sf::Sprite m_boardSprite;
 
 	Board m_board;
+	Input m_inputHandler;
 };
 
 #endif
