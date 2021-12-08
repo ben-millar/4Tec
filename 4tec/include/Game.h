@@ -10,7 +10,7 @@
 #include <Board.h>
 #include <Globals.h>
 #include <Input.h>
-#include <TokenManager.h>
+#include <TextureManager.h>
 
 using namespace std;
 
@@ -52,8 +52,6 @@ public:
 	void render();
 
 private:
-
-
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
 	/// </summary>
@@ -69,7 +67,6 @@ private:
 	sf::Sprite m_boardSprite;
 
 	Board m_board;
-	TokenManager m_tokens;
 };
 
 #endif

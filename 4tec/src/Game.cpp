@@ -7,7 +7,6 @@ void Game::run()
 
 	loadFont();
 	loadTextures();
-	m_tokens.loadTextures();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -48,8 +47,10 @@ void Game::loadFont()
 
 void Game::loadTextures()
 {
-	m_boardTexture.loadFromFile("assets/images/board2.png");
-	m_boardSprite.setTexture(m_boardTexture);
+	TextureManager* tm = TextureManager::getInstance();
+	tm->loadTexture("board", "assets/images/board.png");
+
+	m_boardSprite.setTexture(*tm->getTexture("board"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -73,8 +74,11 @@ void Game::processEvents()
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
 			auto input = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
-			if (m_board.makeMove(std::get<0>(input), std::get<1>(input), std::get<2>(input)))
-				m_tokens.placePiece(input);
+			uint8_t layer, row, col;
+			tie(layer, row, col) = input;
+
+			cout << (int)(layer) << ", " << (int)(row) << ", " << (int)(col) << endl;
+			m_board.makeMove(layer, row, col);
 		}
 	}
 }
@@ -93,7 +97,6 @@ void Game::render()
 
 	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens);
 
 	m_window->display();
 }
