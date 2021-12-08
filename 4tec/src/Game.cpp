@@ -5,10 +5,9 @@ void Game::run()
 	m_window = createWindow("AI | 4Tec");
 	m_window->setKeyRepeatEnabled(false);
 
-	m_inputHandler.assignBoard(&m_board);
-
 	loadFont();
 	loadTextures();
+	m_tokens.loadTextures();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -72,7 +71,11 @@ void Game::processEvents()
 				break;
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
-			m_inputHandler.handleMouseInput(sf::Mouse::getPosition(*m_window));
+		{
+			auto input = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
+			if (m_board.makeMove(std::get<0>(input), std::get<1>(input), std::get<2>(input)))
+				m_tokens.placePiece(input);
+		}
 	}
 }
 
@@ -90,6 +93,7 @@ void Game::render()
 
 	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
+	m_window->draw(m_tokens);
 
 	m_window->display();
 }

@@ -10,6 +10,7 @@
 #include <Board.h>
 #include <Globals.h>
 #include <Input.h>
+#include <TokenManager.h>
 
 using namespace std;
 
@@ -68,7 +69,7 @@ private:
 	sf::Sprite m_boardSprite;
 
 	Board m_board;
-	Input m_inputHandler;
+	TokenManager m_tokens;
 };
 
 #endif

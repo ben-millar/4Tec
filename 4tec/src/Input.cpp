@@ -1,21 +1,5 @@
 #include <Input.h>
 
-bool Input::handleMouseInput(sf::Vector2i t_mousePos)
-{
-	if (!m_board)
-		return false;
-
-	auto input = calculateBoardPiece(t_mousePos);
-	return m_board->makeMove(std::get<0>(input), std::get<1>(input), std::get<2>(input));
-}
-
-////////////////////////////////////////////////////////////
-
-void Input::assignBoard(Board* t_board)
-{
-	m_board = t_board;
-}
-
 ////////////////////////////////////////////////////////////
 
 std::tuple<uint8_t, uint8_t, uint8_t> Input::calculateBoardPiece(sf::Vector2i t_mousePos)
