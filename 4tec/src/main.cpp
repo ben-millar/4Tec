@@ -17,7 +17,7 @@
 int main()
 {
 	srand(static_cast<unsigned>(time(nullptr)));
-	Game game = Game();
+	Game game;
 	game.run();
 	return 0;
 }

@@ -37,18 +37,20 @@ void Game::loadFont()
 	m_robotoTTF.loadFromFile("assets/fonts/Roboto-Thin.ttf");
 
 	// FOR TESTING PURPOSES
-	m_text.setFont(m_robotoTTF);
-	m_text.setCharacterSize(96U);
-	m_text.setString("[ESC] to close window");
-	m_text.setPosition({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
+	//m_text.setFont(m_robotoTTF);
+	//m_text.setCharacterSize(96U);
+	//m_text.setString("[ESC] to close window");
+	//m_text.setPosition({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 }
 
 ////////////////////////////////////////////////////////////
 
 void Game::loadTextures()
 {
-	m_boardTexture.loadFromFile("assets/images/board.png");
-	m_boardSprite.setTexture(m_boardTexture);
+	TextureManager* tm = TextureManager::getInstance();
+	tm->loadTexture("board", "assets/images/board.png");
+
+	m_boardSprite.setTexture(*tm->getTexture("board"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,6 +71,15 @@ void Game::processEvents()
 			default:
 				break;
 			}
+		else if (e.type == sf::Event::MouseButtonPressed)
+		{
+			auto input = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
+			uint8_t layer, row, col;
+			tie(layer, row, col) = input;
+
+			cout << (int)(layer) << ", " << (int)(row) << ", " << (int)(col) << endl;
+			m_board.makeMove(layer, row, col);
+		}
 	}
 }
 

@@ -8,7 +8,6 @@
 class Board
 {
 public:
-
 	Board();
 
 	/// <summary>

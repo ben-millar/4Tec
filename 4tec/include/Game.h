@@ -9,6 +9,8 @@
 
 #include <Board.h>
 #include <Globals.h>
+#include <Input.h>
+#include <TextureManager.h>
 
 using namespace std;
 
@@ -50,7 +52,6 @@ public:
 	void render();
 
 private:
-
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
 	/// </summary>

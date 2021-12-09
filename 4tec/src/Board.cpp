@@ -46,7 +46,7 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		// Add last player's token
 		_board.set(index, true);
 
-		if (checkForWin())
+		if (checkForWin());
 			// **************** DO SOMETHING HERE ****************
 
 		return true;
