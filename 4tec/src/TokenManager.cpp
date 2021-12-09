@@ -2,18 +2,23 @@
 
 void TokenManager::loadTextures()
 {
-	m_redTexture.loadFromFile("assets/images/redToken.png");
-	m_yellowTexture.loadFromFile("assets/images/yellowToken.png");
-	m_boardRender.create(WINDOW_WIDTH, WINDOW_HEIGHT);
-	m_boardRender.clear(sf::Color::Transparent);
+	m_manager = TextureManager::getInstance();
+	m_manager->loadTexture("red","assets/images/redToken.png");
+	m_manager->loadTexture("yellow","assets/images/yellowToken.png");
+	for (auto& t : m_boardRender)
+	{
+		t.create(WINDOW_WIDTH, WINDOW_HEIGHT);
+		t.clear(sf::Color::Transparent);
+	}
 }
 
-////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 {
+	m_boardRender[4].clear(sf::Color::Transparent);
 	sf::Vector2u tx = 
-		TextureManager::getInstance()->getTexture("board")->getSize();
+		m_manager->getTexture("board")->getSize();
 
 	float layerWidth = tx.y / 4.0f;
 	static std::array<sf::Vector2i, 16> points{ {
@@ -23,11 +28,13 @@ void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 		{130,195}, {340,195}, {540,195}, {750,195}
 	}};
 
-	static std::array<float, 4> spriteScale{ .55f,.6f,.78f,1 };
+	// .55, .6, .78, 1
+	static std::array<float, 4> spriteScale{ .68f,.79f,.89f,1 };
 
 	unsigned index = 4 * t_row + t_col;
 	sf::Sprite r;
-	r.setTexture((m_red) ? m_redTexture : m_yellowTexture);
+	const char* tex = (m_red) ? "red" : "yellow";
+	r.setTexture(*m_manager->getTexture(tex));
 	sf::Vector2u texSize = r.getTexture()->getSize();
 	r.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
 	r.setScale(spriteScale[t_row], spriteScale[t_row]);
@@ -36,8 +43,17 @@ void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 	int pos = t_col;
 	r.setPosition(points[index].x, points[index].y + (layerWidth * t_layer));
 
-	m_boardRender.draw(r);
-	m_boardRender.display();
+	m_boardRender[t_row].draw(r);
+	m_boardRender[t_row].display();
 
-	m_board.setTexture(m_boardRender.getTexture());
+	sf::Sprite s;
+	for (int i = 0; i < 4; ++i)
+	{
+		s.setTexture(m_boardRender[i].getTexture());
+		m_boardRender[4].draw(s);
+	}
+
+	m_boardRender[4].display();
+
+	m_board.setTexture(m_boardRender[4].getTexture());
 }

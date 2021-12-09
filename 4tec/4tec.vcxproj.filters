@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\Images">
       <UniqueIdentifier>{954601c2-d8a6-4e7d-b3a7-d21dc47d72a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shader">
+      <UniqueIdentifier>{4053ae69-9dfe-4218-bd93-39a339c4fdcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -69,5 +72,13 @@
     <Image Include="assets\images\board.png">
       <Filter>Resource Files\Images</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shader\fragShader.txt">
+      <Filter>Resource Files\Shader</Filter>
+    </Text>
+    <Text Include="assets\shader\vertShader.txt">
+      <Filter>Resource Files\Shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

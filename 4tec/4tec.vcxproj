@@ -162,6 +162,10 @@
   <ItemGroup>
     <Image Include="assets\images\board.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shader\fragShader.txt" />
+    <Text Include="assets\shader\vertShader.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -36,6 +36,8 @@ public:
 	/// </summary>
 	void loadTextures();
 
+	void loadShader();
+
 	/// <summary>
 	/// Handles system events (input, etc.)
 	/// </summary>
@@ -64,8 +66,10 @@ private:
 	sf::Font m_robotoTTF;
 	sf::Text m_text;
 
-	sf::Texture m_boardTexture;
 	sf::Sprite m_boardSprite;
+	sf::Sprite m_shadowSprite;
+
+	sf::Shader m_shader;
 
 	Board m_board;
 	TokenManager m_tokens;

@@ -7,6 +7,7 @@ void Game::run()
 
 	loadFont();
 	loadTextures();
+	loadShader();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -49,9 +50,25 @@ void Game::loadTextures()
 {
 	TextureManager* tm = TextureManager::getInstance();
 	tm->loadTexture("board", "assets/images/board.png");
+	tm->loadTexture("shadow", "assets/images/shadow.png");
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
+	m_shadowSprite.setTexture(*tm->getTexture("shadow"));
+
 	m_tokens.loadTextures();
+}
+
+////////////////////////////////////////////////////////////
+
+void Game::loadShader()
+{
+	m_shader.loadFromFile("assets/shader/vertShader.txt", "assets/shader/fragShader.txt");
+
+	m_shader.setUniform("windowWidth", (float)WINDOW_WIDTH);
+	m_shader.setUniform("windowHeight", (float)WINDOW_HEIGHT);
+
+	m_shader.setUniform("texture", sf::Shader::CurrentTexture);
+	m_shader.setUniform("tableWidth", (float)(TextureManager::getInstance()->getTexture("board")->getSize().x));
 }
 
 ////////////////////////////////////////////////////////////
@@ -97,9 +114,10 @@ void Game::render()
 {
 	m_window->clear(sf::Color::Black);
 
-	m_window->draw(m_boardSprite);
+	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens);
+	m_window->draw(m_tokens, &m_shader);
+	//m_window->draw(m_shadowSprite);
 
 	m_window->display();
 }

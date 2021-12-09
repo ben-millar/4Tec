@@ -1,0 +1,37 @@
+uniform sampler2D texture;
+
+uniform float windowWidth;
+uniform float windowHeight;
+
+uniform float tableWidth;
+
+void main()
+{
+    // lookup the pixel in the texture
+    vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
+
+    vec2 coord  = gl_FragCoord.xy / vec2(windowWidth,windowHeight); // pixel coord
+
+    int pixelBuffer = 7;
+
+    if (gl_FragCoord.x > pixelBuffer && gl_FragCoord.x < tableWidth - pixelBuffer)
+    {
+        float distFromTopOfLayer;
+        if (coord.y >  0.85)
+            distFromTopOfLayer = 1 - coord.y;
+        else if (coord.y > 0.7)
+            distFromTopOfLayer = 1 - (coord.y + .15);
+        else if (coord.y > 0.55)
+            distFromTopOfLayer = 1 - (coord.y + .3);
+        else if (coord.y > 0.3)
+            distFromTopOfLayer = 1 - (coord.y + .45);
+
+        float max = 5;
+        float min = 0.4;
+
+        float final = distFromTopOfLayer * max + min;
+        pixel *= vec4(final,final,final,1);
+    }
+
+    gl_FragColor = pixel; 
+};
