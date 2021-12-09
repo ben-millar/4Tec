@@ -1,4 +1,5 @@
 #include <Board.h>
+#include <iostream>
 
 Board::Board()
 {
@@ -18,9 +19,13 @@ Board::Board()
 		// Across boards
 		down,
 		uint8_t(down + horizontal),
+		uint8_t(down + horizontal-2), // Backwards
 		uint8_t(down + vertical),
+		uint8_t(down - vertical), // Backwards
 		uint8_t(down + DR),
-		uint8_t(down + DL)
+		uint8_t(down - DR),
+		uint8_t(down + DL),
+		uint8_t(down - DL)
 	};
 }
 
@@ -46,7 +51,8 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		// Add last player's token
 		_board.set(index, true);
 
-		if (checkForWin());
+		if (checkForWin())
+			std::cout << "WEENER \n";
 			// **************** DO SOMETHING HERE ****************
 
 		return true;

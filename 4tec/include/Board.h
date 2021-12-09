@@ -29,7 +29,7 @@ private:
 	uint8_t _layers{ _validLayers }, _rows{ _validRows+1u }, _cols{ _validCols+1u };
 
 	// The set of strides through our bitset we need to check to find 4-in-a-rows
-	std::array<uint8_t, 9> _offsets;
+	std::array<uint8_t, 13> _offsets;
 
 	// Keep track of the current player's tokens (XOR with board to swap players)
 	std::bitset<4*5*5> _currentPlayerTokens;

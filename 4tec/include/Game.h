@@ -11,6 +11,7 @@
 #include <Globals.h>
 #include <Input.h>
 #include <TextureManager.h>
+#include <TokenManager.h>
 
 using namespace std;
 
@@ -67,6 +68,7 @@ private:
 	sf::Sprite m_boardSprite;
 
 	Board m_board;
+	TokenManager m_tokens;
 };
 
 #endif

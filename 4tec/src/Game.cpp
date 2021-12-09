@@ -51,6 +51,7 @@ void Game::loadTextures()
 	tm->loadTexture("board", "assets/images/board.png");
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
+	m_tokens.loadTextures();
 }
 
 ////////////////////////////////////////////////////////////
@@ -77,8 +78,9 @@ void Game::processEvents()
 			uint8_t layer, row, col;
 			tie(layer, row, col) = input;
 
-			cout << (int)(layer) << ", " << (int)(row) << ", " << (int)(col) << endl;
-			m_board.makeMove(layer, row, col);
+			//cout << (int)(layer) << ", " << (int)(row) << ", " << (int)(col) << endl;
+			if (m_board.makeMove(layer, row, col))
+				m_tokens.placePiece(layer, row, col);
 		}
 	}
 }
@@ -97,6 +99,7 @@ void Game::render()
 
 	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
+	m_window->draw(m_tokens);
 
 	m_window->display();
 }
