@@ -49,8 +49,22 @@ void Game::loadFont()
 void Game::loadTextures()
 {
 	TextureManager* tm = TextureManager::getInstance();
-	tm->loadTexture("board", "assets/images/board.png");
-	tm->loadTexture("shadow", "assets/images/shadow.png");
+
+	if (WINDOW_HEIGHT < 780)
+	{
+		tm->loadTexture("board", "assets/images/board_small.png");
+		tm->loadTexture("shadow", "assets/images/shadow_small.png");
+	}
+	else if (WINDOW_HEIGHT < 975)
+	{
+		tm->loadTexture("board", "assets/images/board_medium.png");
+		tm->loadTexture("shadow", "assets/images/shadow_medium.png");
+	}
+	else
+	{
+		tm->loadTexture("board", "assets/images/board_large.png");
+		tm->loadTexture("shadow", "assets/images/shadow_large.png");
+	}
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
 	m_shadowSprite.setTexture(*tm->getTexture("shadow"));
@@ -114,10 +128,10 @@ void Game::render()
 {
 	m_window->clear(sf::Color::Black);
 
-	m_window->draw(m_boardSprite, &m_shader);
+	m_window->draw(m_boardSprite);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens, &m_shader);
-	//m_window->draw(m_shadowSprite);
+	m_window->draw(m_tokens);
+	m_window->draw(m_shadowSprite);
 
 	m_window->display();
 }
