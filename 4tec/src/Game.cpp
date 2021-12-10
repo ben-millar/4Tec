@@ -55,10 +55,8 @@ void Game::loadTextures()
 		tm->loadTexture("board", "assets/images/board_medium.png");
 	else
 		tm->loadTexture("board", "assets/images/board_large.png");
-	tm->loadTexture("shadow", "assets/images/shadow.png");
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
-	m_shadowSprite.setTexture(*tm->getTexture("shadow"));
 
 	m_tokens.loadTextures();
 }
@@ -69,7 +67,6 @@ void Game::loadShader()
 {
 	m_shader.loadFromFile("assets/shader/vertShader.txt", "assets/shader/fragShader.txt");
 
-	m_shader.setUniform("windowWidth", (float)WINDOW_WIDTH);
 	m_shader.setUniform("windowHeight", (float)WINDOW_HEIGHT);
 
 	m_shader.setUniform("texture", sf::Shader::CurrentTexture);

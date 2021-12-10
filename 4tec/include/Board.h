@@ -21,6 +21,15 @@ public:
 	/// <param name="col">Col to place on</param>
 	/// <returns>True if move was successful, false otherwise</returns>
 	bool makeMove(uint8_t layer, uint8_t row, uint8_t col);
+	
+	/// <summary>
+	/// Given a board position, checks if a valid move can be played there.
+	/// </summary>
+	/// <param name="layer">Layer to place on</param>
+	/// <param name="row">Row to place on</param>
+	/// <param name="col">Col to place on</param>
+	/// <returns>True if move is valid, false otherwise</returns>
+	bool isValid(uint8_t layer, uint8_t row, uint8_t col);
 
 	int evaluate();
 

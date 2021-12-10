@@ -44,8 +44,7 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		row * (_cols) +				// Row * cells per row
 		col;						// Col on row
 
-	// If there's nothing in this cell
-	if (!_board.test(index))
+	if (isValid(layer, row, col))
 	{
 		// XOR to the next player before modifying the board
 		_currentPlayerTokens ^= _board;
@@ -63,6 +62,18 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 	}
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+bool Board::isValid(uint8_t layer, uint8_t row, uint8_t col)
+{
+	uint8_t index =
+		layer * (_rows * _cols) +
+		row * (_cols) +
+		col;
+
+	return !_board.test(index);
 }
 
 ////////////////////////////////////////////////////////////
@@ -106,7 +117,7 @@ void Board::loadWinningLines()
 	std::string file_path = "assets/data/winning_lines.txt", line;
 	std::ifstream input(file_path.c_str(), std::ifstream::in);
 
-	if (input.is_open())
+	if (!input.is_open())
 		std::perror("Error opening file in Board.cpp");
 
 	int i = 0;

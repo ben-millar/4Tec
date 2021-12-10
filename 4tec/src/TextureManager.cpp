@@ -15,6 +15,7 @@ try
 {
 	sf::Texture* tx = new sf::Texture();
 	tx->loadFromFile(t_path);
+	tx->setSmooth(true);
 	return tx;
 }
 catch (const std::exception& e)
