@@ -53,6 +53,8 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		// Add last player's token
 		_board.set(index, true);
 
+		std::cout << evaluate() << std::endl;
+
 		if (checkForWin())
 			std::cout << "WEENER \n";
 			// **************** DO SOMETHING HERE ****************
@@ -67,7 +69,14 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 
 int Board::evaluate()
 {
-	return 0;
+	int count = 0;
+	auto lp = _currentPlayerTokens ^ _board;
+
+	for (auto& line : _winningLines)
+		if ((*line & lp).any() && (_currentPlayerTokens & *line).none())
+			count++;
+
+	return count;
 }
 
 ////////////////////////////////////////////////////////////
@@ -103,7 +112,12 @@ void Board::loadWinningLines()
 	int i = 0;
 
 	while (std::getline(input, line))
-		_winningLines.at(i++) = new std::bitset<4*5*5>{ line.c_str() };
+	{
+		// Flip string (bitset initialises from right-to-left
+		std::reverse(line.begin(), line.end());
+		_winningLines.at(i++) = new std::bitset<4 * 5 * 5>{ line.c_str() };
+	}
+		
 
 	input.close();
 }

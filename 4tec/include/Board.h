@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <array>
+#include <algorithm>
 #include <bitset>
 #include <cstdint>
 #include <fstream>
