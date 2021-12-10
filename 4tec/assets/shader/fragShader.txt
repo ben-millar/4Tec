@@ -5,6 +5,8 @@ uniform float windowHeight;
 
 uniform float tableWidth;
 
+uniform float relativeLayerHeight;
+
 void main()
 {
     // lookup the pixel in the texture
@@ -17,14 +19,14 @@ void main()
     if (gl_FragCoord.x > pixelBuffer && gl_FragCoord.x < tableWidth - pixelBuffer)
     {
         float distFromTopOfLayer;
-        if (coord.y >  0.85)
+        if (coord.y >  1 - relativeLayerHeight)
             distFromTopOfLayer = 1 - coord.y;
-        else if (coord.y > 0.7)
-            distFromTopOfLayer = 1 - (coord.y + .15);
-        else if (coord.y > 0.55)
-            distFromTopOfLayer = 1 - (coord.y + .3);
-        else if (coord.y > 0.3)
-            distFromTopOfLayer = 1 - (coord.y + .45);
+        else if (coord.y > 1 - relativeLayerHeight * 2)
+            distFromTopOfLayer = 1 - (coord.y + relativeLayerHeight);
+        else if (coord.y > 1- relativeLayerHeight * 3)
+            distFromTopOfLayer = 1 - (coord.y + relativeLayerHeight * 2);
+        else if (coord.y > 1 - relativeLayerHeight * 4)
+            distFromTopOfLayer = 1 - (coord.y + relativeLayerHeight * 3);
 
         float max = 5;
         float min = 0.4;

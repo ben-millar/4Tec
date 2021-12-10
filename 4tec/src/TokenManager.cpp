@@ -21,12 +21,14 @@ void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 		m_manager->getTexture("board")->getSize();
 
 	float layerWidth = tx.y / 4.0f;
-	static std::array<sf::Vector2i, 16> points{ {
-		{220,25}, {370,25}, {530,25}, {685,25},
-		{195,70}, {365,70}, {530,70}, {700,70},
-		{170, 125}, {350,125}, {535,125}, {725,125},
-		{130,195}, {340,195}, {540,195}, {750,195}
-	}};
+	static std::array<float, 4> heights{ .104f, .29f, .521f, .8125f };
+
+	static std::array<float, 16> widths{
+		.248f, .428f, .598f, .774f,
+		.220f, .412f, .598f, .79f,
+		.192f, .395f, .604f, .819f,
+		.146f, .384f, .610f, .847f
+	};
 
 	// .55, .6, .78, 1
 	static std::array<float, 4> spriteScale{ .68f,.79f,.89f,1 };
@@ -41,7 +43,7 @@ void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 	m_red = !m_red;
 
 	int pos = t_col;
-	r.setPosition(points[index].x, points[index].y + (layerWidth * t_layer));
+	r.setPosition(tx.x * widths[index], layerWidth * heights[index / 4] + (layerWidth * t_layer));
 
 	m_boardRender[t_row].draw(r);
 	m_boardRender[t_row].display();

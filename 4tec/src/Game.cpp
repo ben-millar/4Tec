@@ -49,7 +49,12 @@ void Game::loadFont()
 void Game::loadTextures()
 {
 	TextureManager* tm = TextureManager::getInstance();
-	tm->loadTexture("board", "assets/images/board.png");
+	if (WINDOW_HEIGHT < 780)
+		tm->loadTexture("board", "assets/images/board_small.png");
+	else if (WINDOW_HEIGHT < 975)
+		tm->loadTexture("board", "assets/images/board_medium.png");
+	else
+		tm->loadTexture("board", "assets/images/board_large.png");
 	tm->loadTexture("shadow", "assets/images/shadow.png");
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
@@ -69,6 +74,9 @@ void Game::loadShader()
 
 	m_shader.setUniform("texture", sf::Shader::CurrentTexture);
 	m_shader.setUniform("tableWidth", (float)(TextureManager::getInstance()->getTexture("board")->getSize().x));
+	float h = (float)TextureManager::getInstance()->getTexture("board")->getSize().y;
+	float wh = (float)WINDOW_HEIGHT;
+	m_shader.setUniform("relativeLayerHeight", h / wh / 4.0f);
 }
 
 ////////////////////////////////////////////////////////////
