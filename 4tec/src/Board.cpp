@@ -27,6 +27,8 @@ Board::Board()
 		uint8_t(down + DL),
 		uint8_t(down - DL)
 	};
+
+	loadWinningLines();
 }
 
 ////////////////////////////////////////////////////////////
@@ -51,6 +53,8 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 		// Add last player's token
 		_board.set(index, true);
 
+		std::cout << evaluate() << std::endl;
+
 		if (checkForWin())
 			std::cout << "WEENER \n";
 			// **************** DO SOMETHING HERE ****************
@@ -59,6 +63,20 @@ bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
 	}
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+int Board::evaluate()
+{
+	int count = 0;
+	auto lp = _currentPlayerTokens ^ _board;
+
+	for (auto& line : _winningLines)
+		if ((*line & lp).any() && (_currentPlayerTokens & *line).none())
+			count++;
+
+	return count;
 }
 
 ////////////////////////////////////////////////////////////
@@ -79,4 +97,27 @@ bool Board::checkForWin()
 	}
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void Board::loadWinningLines()
+{
+	std::string file_path = "assets/data/winning_lines.txt", line;
+	std::ifstream input(file_path.c_str(), std::ifstream::in);
+
+	if (input.is_open())
+		std::perror("Error opening file in Board.cpp");
+
+	int i = 0;
+
+	while (std::getline(input, line))
+	{
+		// Flip string (bitset initialises from right-to-left
+		std::reverse(line.begin(), line.end());
+		_winningLines.at(i++) = new std::bitset<4 * 5 * 5>{ line.c_str() };
+	}
+		
+
+	input.close();
 }

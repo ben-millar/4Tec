@@ -2,8 +2,11 @@
 #define BOARD_H
 
 #include <array>
+#include <algorithm>
 #include <bitset>
 #include <cstdint>
+#include <fstream>
+#include <string>
 
 class Board
 {
@@ -19,9 +22,13 @@ public:
 	/// <returns>True if move was successful, false otherwise</returns>
 	bool makeMove(uint8_t layer, uint8_t row, uint8_t col);
 
+	int evaluate();
+
 	bool checkForWin();
 
 private:
+	void loadWinningLines();
+
 	// We have a playable area of 4x4x4
 	uint8_t _validLayers{ 4 }, _validRows{ 4 }, _validCols{ 4 };
 
@@ -36,6 +43,9 @@ private:
 
 	// Keep track of all tokens on board, regardless of colour
 	std::bitset<4*5*5> _board;
+
+	// An array of bitsets, each representing a winning line on the game board
+	std::array<std::bitset<4*5*5>*, 76> _winningLines;
 };
 
 #endif BOARD_H
