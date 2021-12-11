@@ -9,6 +9,8 @@ void Game::run()
 	loadTextures();
 	loadShader();
 
+	_gm = GameManager::getInstance();
+
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
 	const sf::Time MS_PER_UPDATE = sf::seconds(1 / 60.0f);
@@ -96,13 +98,10 @@ void Game::processEvents()
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
-			auto input = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
-			uint8_t layer, row, col;
-			tie(layer, row, col) = input;
+			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
 
-			//cout << (int)(layer) << ", " << (int)(row) << ", " << (int)(col) << endl;
-			if (m_board.makeMove(layer, row, col))
-				m_tokens.placePiece(layer, row, col);
+			if (_gm->makeMove(move))
+				m_tokens.placePiece(move);
 		}
 	}
 }

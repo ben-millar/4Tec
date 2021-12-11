@@ -6,6 +6,7 @@
 #include <Globals.h>
 #include <array>
 
+#include <GameData.h>
 #include <TextureManager.h>
 
 class TokenManager
@@ -16,7 +17,7 @@ public:
 
 	void loadTextures();
 
-	void placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col);
+	void placePiece(Move t_move);
 
 	operator sf::Drawable&() { return m_board; }
 private:

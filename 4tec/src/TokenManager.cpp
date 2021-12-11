@@ -14,8 +14,11 @@ void TokenManager::loadTextures()
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
+void TokenManager::placePiece(Move t_move)
 {
+	uint8_t layer, row, col;
+	std::tie(layer, row, col) = t_move;
+
 	m_boardRender[4].clear(sf::Color::Transparent);
 	sf::Vector2u tx = 
 		m_manager->getTexture("board")->getSize();
@@ -33,20 +36,20 @@ void TokenManager::placePiece(uint8_t t_layer, uint8_t t_row, uint8_t t_col)
 	// .55, .6, .78, 1
 	static std::array<float, 4> spriteScale{ .68f,.79f,.89f,1 };
 
-	unsigned index = 4 * t_row + t_col;
+	unsigned index = 4 * row + col;
 	sf::Sprite r;
 	const char* tex = (m_red) ? "red" : "yellow";
 	r.setTexture(*m_manager->getTexture(tex));
 	sf::Vector2u texSize = r.getTexture()->getSize();
 	r.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
-	r.setScale(spriteScale[t_row], spriteScale[t_row]);
+	r.setScale(spriteScale[row], spriteScale[row]);
 	m_red = !m_red;
 
-	int pos = t_col;
-	r.setPosition(tx.x * widths[index], layerWidth * heights[index / 4] + (layerWidth * t_layer));
+	int pos = col;
+	r.setPosition(tx.x * widths[index], layerWidth * heights[index / 4] + (layerWidth * layer));
 
-	m_boardRender[t_row].draw(r);
-	m_boardRender[t_row].display();
+	m_boardRender[row].draw(r);
+	m_boardRender[row].display();
 
 	sf::Sprite s;
 	for (int i = 0; i < 4; ++i)

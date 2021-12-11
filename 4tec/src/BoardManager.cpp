@@ -1,7 +1,7 @@
-#include <Board.h>
+#include <BoardManager.h>
 #include <iostream>
 
-Board::Board()
+BoardManager::BoardManager()
 {
 	// Bit Offsets
 	uint8_t horizontal = 1u; // Along a row
@@ -33,74 +33,38 @@ Board::Board()
 
 ////////////////////////////////////////////////////////////
 
-bool Board::makeMove(uint8_t layer, uint8_t row, uint8_t col)
+void BoardManager::makeMove(Board& t_board, Move t_move)
 {
-	 if (layer >= _validLayers || row >= _validRows || col >= _validCols)
+	t_board.set(moveToIndex(t_move), true);
+}
+
+////////////////////////////////////////////////////////////
+
+bool BoardManager::isValid(Board& t_board, Move t_move)
+{
+	uint8_t layer, row, col;
+	std::tie(layer, row, col) = t_move;
+
+	if (layer >= _validLayers || row >= _validRows || col >= _validCols)
 		return false;
 
-	// E.g., 1/1/1 = 1(16) + 1(4) + 1 = 21
-	uint8_t index =
-		layer * (_rows * _cols) +	// Layer * cells per layer
-		row * (_cols) +				// Row * cells per row
-		col;						// Col on row
-
-	if (isValid(layer, row, col))
-	{
-		// XOR to the next player before modifying the board
-		_currentPlayerTokens ^= _board;
-
-		// Add last player's token
-		_board.set(index, true);
-
-		std::cout << evaluate() << std::endl;
-
-		if (checkForWin())
-			std::cout << "WEENER \n";
-			// **************** DO SOMETHING HERE ****************
-
-		return true;
-	}
-
-	return false;
-}
-
-////////////////////////////////////////////////////////////
-
-bool Board::isValid(uint8_t layer, uint8_t row, uint8_t col)
-{
 	uint8_t index =
 		layer * (_rows * _cols) +
-		row * (_cols) +
+		row * (_cols)+
 		col;
 
-	return !_board.test(index);
+	return !t_board.test(index);
 }
 
 ////////////////////////////////////////////////////////////
 
-int Board::evaluate()
+bool BoardManager::checkForWin(Board& t_board)
 {
-	int count = 0;
-	auto lp = _currentPlayerTokens ^ _board;
-
-	for (auto& line : _winningLines)
-		if ((*line & lp).any() && (_currentPlayerTokens & *line).none())
-			count++;
-
-	return count;
-}
-
-////////////////////////////////////////////////////////////
-
-bool Board::checkForWin()
-{
-	// Last player
-	auto lp = _currentPlayerTokens ^ _board;
 	std::bitset<4 * 5 * 5> mask;
 
 	for (uint8_t& offset : _offsets)
 	{
-		mask = lp & (lp >> offset);
+		mask = t_board & (t_board >> offset);
 		mask = mask & (mask >> offset * 2);
 
 		if (mask.any())
@@ -112,13 +76,14 @@ bool Board::checkForWin()
 
 ////////////////////////////////////////////////////////////
 
-void Board::loadWinningLines()
+void BoardManager::loadWinningLines()
+try
 {
 	std::string file_path = "assets/data/winning_lines.txt", line;
 	std::ifstream input(file_path.c_str(), std::ifstream::in);
 
 	if (!input.is_open())
-		std::perror("Error opening file in Board.cpp");
+		std::perror("Error opening file in BoardManager.cpp");
 
 	int i = 0;
 
@@ -128,7 +93,23 @@ void Board::loadWinningLines()
 		std::reverse(line.begin(), line.end());
 		_winningLines.at(i++) = new std::bitset<4 * 5 * 5>{ line.c_str() };
 	}
-		
 
 	input.close();
+}
+catch (const std::exception&)
+{
+
+}
+
+////////////////////////////////////////////////////////////
+
+uint8_t BoardManager::moveToIndex(Move t_move)
+{
+	uint8_t layer, row, col;
+	std::tie(layer, row, col) = t_move;
+
+	return
+		layer * (_rows * _cols) +	// Layer * cells per layer
+		row * (_cols)+				// Row * cells per row
+		col;						// Col on row
 }
