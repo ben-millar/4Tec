@@ -146,6 +146,7 @@
     <ClCompile Include="src\GameManager.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Minimax.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
     <ClCompile Include="src\TokenManager.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="include\GameManager.h" />
     <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\Minimax.h" />
     <ClInclude Include="include\TextureManager.h" />
     <ClInclude Include="include\TokenManager.h" />
   </ItemGroup>

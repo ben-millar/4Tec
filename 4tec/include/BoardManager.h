@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cstdint>
-#include <fstream>
-#include <string>
 
 #include <GameData.h>
 
@@ -29,7 +27,7 @@ public:
 	bool checkForWin(Board& t_board);
 
 private:
-	void loadWinningLines();
+	
 
 	uint8_t moveToIndex(Move t_move);
 
@@ -41,9 +39,6 @@ private:
 
 	// The set of strides through our bitset we need to check to find 4-in-a-rows
 	std::array<uint8_t, 13> _offsets;
-
-	// An array of bitsets, each representing a winning line on the game board
-	std::array<std::bitset<4*5*5>*, 76> _winningLines;
 };
 
 #endif BOARD_H

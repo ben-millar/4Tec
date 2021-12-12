@@ -27,8 +27,6 @@ BoardManager::BoardManager()
 		uint8_t(down + DL),
 		uint8_t(down - DL)
 	};
-
-	loadWinningLines();
 }
 
 ////////////////////////////////////////////////////////////
@@ -72,33 +70,6 @@ bool BoardManager::checkForWin(Board& t_board)
 	}
 
 	return false;
-}
-
-////////////////////////////////////////////////////////////
-
-void BoardManager::loadWinningLines()
-try
-{
-	std::string file_path = "assets/data/winning_lines.txt", line;
-	std::ifstream input(file_path.c_str(), std::ifstream::in);
-
-	if (!input.is_open())
-		std::perror("Error opening file in BoardManager.cpp");
-
-	int i = 0;
-
-	while (std::getline(input, line))
-	{
-		// Flip string (bitset initialises from right-to-left
-		std::reverse(line.begin(), line.end());
-		_winningLines.at(i++) = new std::bitset<4 * 5 * 5>{ line.c_str() };
-	}
-
-	input.close();
-}
-catch (const std::exception&)
-{
-
 }
 
 ////////////////////////////////////////////////////////////
