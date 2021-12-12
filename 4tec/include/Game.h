@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <Board.h>
+#include <GameManager.h>
 #include <Globals.h>
 #include <Input.h>
 #include <TextureManager.h>
@@ -71,7 +71,7 @@ private:
 
 	sf::Shader m_shader;
 
-	Board m_board;
+	GameManager* _gm;
 	TokenManager m_tokens;
 };
 

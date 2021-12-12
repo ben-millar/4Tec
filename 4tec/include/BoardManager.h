@@ -1,5 +1,5 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARD_MANAGER_H
+#define BOARD_MANAGER_H
 
 #include <array>
 #include <algorithm>
@@ -8,35 +8,30 @@
 #include <fstream>
 #include <string>
 
-class Board
+#include <GameData.h>
+
+class BoardManager
 {
 public:
-	Board();
+	BoardManager();
 
 	/// <summary>
 	/// Tries to make a move on the board for the current player, provided it's legal
 	/// </summary>
-	/// <param name="layer">Layer to place on</param>
-	/// <param name="row">Row to place on</param>
-	/// <param name="col">Col to place on</param>
-	/// <returns>True if move was successful, false otherwise</returns>
-	bool makeMove(uint8_t layer, uint8_t row, uint8_t col);
+	void makeMove(Board& t_board, Move t_move);
 	
 	/// <summary>
 	/// Given a board position, checks if a valid move can be played there.
 	/// </summary>
-	/// <param name="layer">Layer to place on</param>
-	/// <param name="row">Row to place on</param>
-	/// <param name="col">Col to place on</param>
-	/// <returns>True if move is valid, false otherwise</returns>
-	bool isValid(uint8_t layer, uint8_t row, uint8_t col);
+	bool isValid(Board& t_board, Move t_move);
 
-	int evaluate();
 
-	bool checkForWin();
+	bool checkForWin(Board& t_board);
 
 private:
 	void loadWinningLines();
+
+	uint8_t moveToIndex(Move t_move);
 
 	// We have a playable area of 4x4x4
 	uint8_t _validLayers{ 4 }, _validRows{ 4 }, _validCols{ 4 };
@@ -46,12 +41,6 @@ private:
 
 	// The set of strides through our bitset we need to check to find 4-in-a-rows
 	std::array<uint8_t, 13> _offsets;
-
-	// Keep track of the current player's tokens (XOR with board to swap players)
-	std::bitset<4*5*5> _currentPlayerTokens;
-
-	// Keep track of all tokens on board, regardless of colour
-	std::bitset<4*5*5> _board;
 
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<std::bitset<4*5*5>*, 76> _winningLines;
