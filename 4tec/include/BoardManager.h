@@ -27,7 +27,7 @@ public:
 	bool checkForWin(Board& t_board);
 
 private:
-	void loadWinningLines();
+	
 
 	uint8_t moveToIndex(Move t_move);
 
