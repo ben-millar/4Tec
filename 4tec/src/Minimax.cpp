@@ -6,7 +6,7 @@ Move Minimax::findMove(Board* t_board, Board* t_player)
 	auto move = bestBoard ^ *t_board;
 
 	int index = 0;
-<<<<<<< HEAD
+
 	for (; index < 64; ++index)
 		if (move.test(index)) break;
 
@@ -16,18 +16,6 @@ Move Minimax::findMove(Board* t_board, Board* t_player)
 	col = index - (layer * 16 + row * 4);
 
 	return Move(layer, row, col);
-=======
-	for (; index < 100; ++index)
-		if (move.test(index)) break;
-
-	uint8_t layer, row, col;
-	layer = index / 25;
-	row = (index - layer * 25) / 5;
-	col = index - (layer * 25 + row * 5);
-
-	return Move(layer, row, col);
-	//return Move();
->>>>>>> Slight refactor, implemented working evaluation function
 }
 
 ////////////////////////////////////////////////////////////
