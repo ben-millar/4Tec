@@ -1,21 +1,21 @@
 #include <Minimax.h>
 #include <iostream>
-Move Minimax::findMove(Board* t_board)
+Move Minimax::findMove(Board* t_board, Board* t_player)
 {
-	//auto bestBoard = minimax(t_board, 0)->getBoard();
-	//auto move = bestBoard ^ t_board->getBoard();
+	Board bestBoard = minimax(*t_board, *t_player, 0);
+	auto move = bestBoard ^ *t_board;
 
-	//int index = 0;
-	//for (; index < 100; ++index)
-	//	if (move.test(index)) break;
+	int index = 0;
+	for (; index < 100; ++index)
+		if (move.test(index)) break;
 
-	//uint8_t layer, row, col;
-	//layer = index / 25;
-	//row = (index - layer * 25) / 5;
-	//col = index - (layer * 25 + row * 5);
+	uint8_t layer, row, col;
+	layer = index / 25;
+	row = (index - layer * 25) / 5;
+	col = index - (layer * 25 + row * 5);
 
-	//return Move(layer, row, col);
-	return Move();
+	return Move(layer, row, col);
+	//return Move();
 }
 
 ////////////////////////////////////////////////////////////
@@ -47,9 +47,29 @@ catch (const std::exception&)
 
 ////////////////////////////////////////////////////////////
 
-Board* Minimax::minimax(Board* t_board, int t_depth)
+Board Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 {
-	//auto vb = findValidMoves(t_board);
+	vector<uint8_t> vm;
+	findValidMoves(t_board, vm);
+
+	Board bestBoard, move;
+	int bestScore = numeric_limits<int>::min();
+
+	for (uint8_t& index : vm)
+	{
+		move.reset();
+		move.set(index);
+
+		int score = evaluate(t_board, t_player, move);
+
+		if (score > bestScore)
+		{
+			bestBoard = (t_board | move);
+			bestScore = score;
+		}
+	}
+
+	return bestBoard;
 
 	//if (t_depth > 0)
 	//{
@@ -73,24 +93,40 @@ Board* Minimax::minimax(Board* t_board, int t_depth)
 
 	//	return best;
 	//}
-	return new Board();
 }
 
-int Minimax::evaluate(Board* t_board, Board* t_player)
+int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 {
-	int value{ 0 }, pCount{ 0 }, oppCount{ 0 };
+	int value{ 0 }, pCount{ 0 }, oppCount{ 0 }, _pCount{ 0 }, _oppCount{ 0 };
 
-	Board opponent = *t_player ^ *t_board;
+	Board opponent = t_player ^ t_board;
 
 	for (auto& wl : _winningLines)
 	{
-		pCount = pow((*t_player & *wl).count(), 3);
-		oppCount = -pow((opponent & *wl).count(), 3);
+		pCount = (t_player & *wl).count();
+		_pCount = ((t_move | t_player) & *wl).count();
 
+		oppCount = (opponent & *wl).count();
+		_oppCount = ((t_move | opponent) & *wl).count();
+
+		// This move wins the game
+		if (3 == pCount)
+			if (4 == _pCount)
+				return std::numeric_limits<int>::max();
+
+		// This move blocks an opponents win
+		if (3 == oppCount)
+			if (4 == _oppCount)
+				return std::numeric_limits<int>::max() / 2;
+
+		// Ignore line if both players have tokens; unwinnable.
 		if (pCount && oppCount)
 			continue;
+
+		// Add a value for adding to a free line, skewed towards longer lengths
+		pCount = pow(_pCount, 4.f);
 		
-		value += pCount += oppCount;
+		value += pCount;
 	}
 
 	return value;
@@ -100,18 +136,18 @@ int Minimax::evaluate(Board* t_board, Board* t_player)
 
 void Minimax::findValidMoves(Board t_board, vector<uint8_t>& t_validMoves)
 {
-	static bitset<4 * 5 * 5> buffer("0000100001000010000111111000010000100001000011111100001000010000100001111110000100001000010000111111");
+	static bitset<4 * 5 * 5> buffer("1111110000100001000010000111111000010000100001000011111100001000010000100001111110000100001000010000");
 	bitset<4 * 5 * 5> mask;
 	mask.set(0);
 
 	t_validMoves.clear();
 
-	t_board &= buffer;
+	t_board |= buffer;
 
 	for (uint8_t index = 0; index < 100; ++index)
 	{
 		if ((t_board & mask).none())
 			t_validMoves.push_back(index);
-		mask >>= 1;
+		mask <<= 1;
 	}
 }

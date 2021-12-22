@@ -22,16 +22,16 @@ public:
 	Minimax(Minimax&) = delete;
 	Minimax& operator=(Minimax&) = delete;
 
-	Move findMove(Board*);
+	Move findMove(Board* t_board, Board* t_player);
 
 private:
 	Minimax() { loadWinningLines(); }
 
 	void loadWinningLines();
 
-	Board* minimax(Board*, int t_depth);
+	Board minimax(Board& t_board, Board& t_player, int t_depth);
 
-	int evaluate(Board* t_board, Board* t_player);
+	int evaluate(Board& t_board, Board& t_player, Board& t_move);
 
 	//Board* min(vector<Board*>);
 	//Board* max(vector<Board*>);

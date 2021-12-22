@@ -19,6 +19,9 @@ public:
 
 	bool makeMove(Move t_move);
 
+	Board* getCurrentPlayerBoard() { return &_currentPlayerTokens; }
+	Board* getGameBoard() { return &_gameBoard; }
+
 private:
 	GameManager() {}
 	BoardManager _boardManager;

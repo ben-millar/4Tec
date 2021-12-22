@@ -10,6 +10,7 @@
 #include <GameManager.h>
 #include <Globals.h>
 #include <Input.h>
+#include <Minimax.h>
 #include <TextureManager.h>
 #include <TokenManager.h>
 
