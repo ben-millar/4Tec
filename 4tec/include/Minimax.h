@@ -39,7 +39,7 @@ private:
 	void findValidMoves(Board, vector<uint8_t>&);
 
 	// An array of bitsets, each representing a winning line on the game board
-	std::array<std::bitset<4 * 5 * 5>*, 76> _winningLines;
+	std::array<Board*, 76> _winningLines;
 };
 
 #endif

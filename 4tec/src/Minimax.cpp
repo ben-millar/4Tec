@@ -6,16 +6,15 @@ Move Minimax::findMove(Board* t_board, Board* t_player)
 	auto move = bestBoard ^ *t_board;
 
 	int index = 0;
-	for (; index < 100; ++index)
+	for (; index < 64; ++index)
 		if (move.test(index)) break;
 
 	uint8_t layer, row, col;
-	layer = index / 25;
-	row = (index - layer * 25) / 5;
-	col = index - (layer * 25 + row * 5);
+	layer = index / 16;
+	row = (index - layer * 16) / 4;
+	col = index - (layer * 16 + row * 4);
 
 	return Move(layer, row, col);
-	//return Move();
 }
 
 ////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ try
 	{
 		// Flip string (bitset initialises from right-to-left
 		std::reverse(line.begin(), line.end());
-		_winningLines.at(i++) = new std::bitset<4 * 5 * 5>{ line.c_str() };
+		_winningLines.at(i++) = new Board{ line.c_str() };
 	}
 
 	input.close();
@@ -70,29 +69,6 @@ Board Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 	}
 
 	return bestBoard;
-
-	//if (t_depth > 0)
-	//{
-	//	// Max
-	//	return *vb.begin();
-
-	//	// Min
-	//	//return *vb.end();
-	//}
-	//else
-	//{
-	//	Board* best = new Board();
-
-	//	for (Board* b : vb)
-	//	{
-	//		auto res = minimax(b, t_depth + 1);
-	//		best = (res->evaluate() > best->evaluate())
-	//			? res
-	//			: best;
-	//	}
-
-	//	return best;
-	//}
 }
 
 int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
@@ -103,11 +79,11 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 
 	for (auto& wl : _winningLines)
 	{
-		pCount = (t_player & *wl).count();
-		_pCount = ((t_move | t_player) & *wl).count();
+		pCount = (t_player & *wl).count();				// Before move
+		_pCount = ((t_move | t_player) & *wl).count();	// After move
 
-		oppCount = (opponent & *wl).count();
-		_oppCount = ((t_move | opponent) & *wl).count();
+		oppCount = (opponent & *wl).count();			// Before move
+		_oppCount = ((t_move | opponent) & *wl).count();// After move
 
 		// This move wins the game
 		if (3 == pCount)
@@ -136,15 +112,12 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 
 void Minimax::findValidMoves(Board t_board, vector<uint8_t>& t_validMoves)
 {
-	static bitset<4 * 5 * 5> buffer("1111110000100001000010000111111000010000100001000011111100001000010000100001111110000100001000010000");
-	bitset<4 * 5 * 5> mask;
+	Board mask;
 	mask.set(0);
 
 	t_validMoves.clear();
 
-	t_board |= buffer;
-
-	for (uint8_t index = 0; index < 100; ++index)
+	for (uint8_t index = 0; index < t_board.size(); ++index)
 	{
 		if ((t_board & mask).none())
 			t_validMoves.push_back(index);
