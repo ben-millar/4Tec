@@ -101,7 +101,18 @@ void Game::processEvents()
 			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
 
 			if (_gm->makeMove(move))
+			{
 				m_tokens.placePiece(move);
+
+				Board* b = _gm->getGameBoard();
+				Board* p = _gm->getCurrentPlayerBoard();
+
+				Move AIMove = Minimax::getInstance()->findMove(b, p);
+
+				if (_gm->makeMove(AIMove))
+					m_tokens.placePiece(AIMove);
+
+			}
 		}
 	}
 }

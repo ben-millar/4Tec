@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{7c64fdca-73be-4de1-bc97-8a9dd7e35815}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Data">
+      <UniqueIdentifier>{9be0afb4-ccbb-41ce-9a56-4b0c1f75d834}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -50,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="src\BoardManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Minimax.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +83,9 @@
     <ClInclude Include="include\TokenManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Minimax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\fonts\Roboto-Thin.ttf">
@@ -94,6 +103,9 @@
     </Text>
     <Text Include="assets\shader\vertShader.txt">
       <Filter>Resource Files\Shader</Filter>
+    </Text>
+    <Text Include="assets\data\winning_lines.txt">
+      <Filter>Resource Files\Data</Filter>
     </Text>
   </ItemGroup>
 </Project>

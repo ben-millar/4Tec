@@ -3,8 +3,7 @@
 
 #include <array>
 #include <algorithm>
-#include <bitset>
-#include <cstdint>
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -34,16 +33,10 @@ private:
 	uint8_t moveToIndex(Move t_move);
 
 	// We have a playable area of 4x4x4
-	uint8_t _validLayers{ 4 }, _validRows{ 4 }, _validCols{ 4 };
-
-	// But we add a buffer row/col to each layer to prevent 4-in-a-row from wrapping across boundaries
-	uint8_t _layers{ _validLayers }, _rows{ _validRows+1u }, _cols{ _validCols+1u };
-
-	// The set of strides through our bitset we need to check to find 4-in-a-rows
-	std::array<uint8_t, 13> _offsets;
+	uint8_t _layers{ 4 }, _rows{ 4 }, _cols{ 4 };
 
 	// An array of bitsets, each representing a winning line on the game board
-	std::array<std::bitset<4*5*5>*, 76> _winningLines;
+	std::array<Board*, 76> _winningLines;
 };
 
 #endif BOARD_H
