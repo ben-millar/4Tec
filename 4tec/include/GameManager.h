@@ -19,6 +19,8 @@ public:
 
 	bool makeMove(Move t_move);
 
+	void resetGame();
+
 	Board* getCurrentPlayerBoard() { return &_currentPlayerTokens; }
 	Board* getGameBoard() { return &_gameBoard; }
 
@@ -27,6 +29,7 @@ private:
 	BoardManager _boardManager;
 	Board _gameBoard, _currentPlayerTokens;
 	Player _currentPlayer{ Player::YELLOW };
+	bool _gameOver{ false };
 
 	void swapPlayers();
 };

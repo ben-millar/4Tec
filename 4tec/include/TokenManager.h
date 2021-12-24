@@ -19,6 +19,8 @@ public:
 
 	void placePiece(Move t_move);
 
+	void reset();
+
 	operator sf::Drawable&() { return m_board; }
 private:
 	TextureManager* m_manager;

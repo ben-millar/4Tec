@@ -24,7 +24,6 @@ public:
 	/// </summary>
 	bool isValid(Board& t_board, Move t_move);
 
-
 	bool checkForWin(Board& t_board);
 
 private:
