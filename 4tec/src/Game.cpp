@@ -93,6 +93,10 @@ void Game::processEvents()
 			case sf::Keyboard::Escape:
 				m_window->close();
 				break;
+			case sf::Keyboard::R:
+				_gm->resetGame();
+				m_tokens.reset();
+				break;
 			default:
 				break;
 			}
@@ -111,7 +115,6 @@ void Game::processEvents()
 
 				if (_gm->makeMove(AIMove))
 					m_tokens.placePiece(AIMove);
-
 			}
 		}
 	}
@@ -132,7 +135,6 @@ void Game::render()
 	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
 	m_window->draw(m_tokens, &m_shader);
-	//m_window->draw(m_shadowSprite);
 
 	m_window->display();
 }

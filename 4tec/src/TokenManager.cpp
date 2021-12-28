@@ -62,3 +62,12 @@ void TokenManager::placePiece(Move t_move)
 
 	m_board.setTexture(m_boardRender[4].getTexture());
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+void TokenManager::reset()
+{
+	for (auto& b : m_boardRender)
+		b.clear(sf::Color::Transparent);
+	m_board.setTexture(m_boardRender[4].getTexture());
+}

@@ -2,6 +2,8 @@
 
 bool GameManager::makeMove(Move t_move)
 {
+	if (_gameOver) return false;
+
 	if (_boardManager.isValid(_gameBoard, t_move))
 	{
 		// Commit the move to our player's pieces
@@ -13,7 +15,11 @@ bool GameManager::makeMove(Move t_move)
 		// Check if that was a winning move for the current player
 		if (_boardManager.checkForWin(_currentPlayerTokens))
 		{
-			std::cout << "Winner!" << std::endl;
+			(Player::RED == _currentPlayer)
+				? std::cout << "Red player wins!" << std::endl
+				: std::cout << "Yellow player wins!" << std::endl;
+
+			_gameOver = true;
 		}
 		
 		swapPlayers();
@@ -22,6 +28,15 @@ bool GameManager::makeMove(Move t_move)
 	}
 
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void GameManager::resetGame()
+{
+	_gameBoard.reset();
+	_currentPlayerTokens.reset();
+	_gameOver = false;
 }
 
 ////////////////////////////////////////////////////////////
