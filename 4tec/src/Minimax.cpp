@@ -72,7 +72,9 @@ BoardValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 	   be inserting at the end of our vector, it's quicker to sort at the end. */
 	sort(rankedMoves.begin(), rankedMoves.end(), Compare());
 
-	return rankedMoves.back();
+	return t_depth % 2
+		? rankedMoves.front()
+		: rankedMoves.back();
 }
 
 ////////////////////////////////////////////////////////////
