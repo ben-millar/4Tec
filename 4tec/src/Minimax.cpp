@@ -61,7 +61,10 @@ BoardValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 		move.reset();
 		move.set(index);
 
-		rankedMoves.push_back({ move, evaluate(t_board, t_player, move) });
+		if (t_depth > 1)
+			rankedMoves.push_back({ move, evaluate(t_board, t_player, move) });
+		else
+			rankedMoves.push_back(minimax(t_board, t_player, t_depth + 1));
 	}
 
 	/* We could use a priority queue here, but that is only more efficient if we 

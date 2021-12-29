@@ -107,6 +107,7 @@ void Game::processEvents()
 			if (_gm->makeMove(move))
 			{
 				m_tokens.placePiece(move);
+				render(); // Sneak in a draw call while the AI thinks
 
 				Board* b = _gm->getGameBoard();
 				Board* p = _gm->getCurrentPlayerBoard();
