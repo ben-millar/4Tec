@@ -2,8 +2,8 @@
 #include <iostream>
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
-	Board bestBoard = minimax(*t_board, *t_player, 0);
-	auto move = bestBoard ^ *t_board;
+	// Retrieve the board, discard the value
+	Board move = minimax(*t_board, *t_player, 0).first;
 
 	int index = 0;
 
@@ -47,30 +47,32 @@ catch (const std::exception&)
 
 ////////////////////////////////////////////////////////////
 
-Board Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
+BoardValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 {
 	vector<uint8_t> vm;
 	findValidMoves(t_board, vm);
 
-	Board bestBoard, move;
-	int bestScore = numeric_limits<int>::min();
+	Board move;
+
+	vector<BoardValuePair> rankedMoves;
 
 	for (uint8_t& index : vm)
 	{
 		move.reset();
 		move.set(index);
 
-		int score = evaluate(t_board, t_player, move);
-
-		if (score > bestScore)
-		{
-			bestBoard = (t_board | move);
-			bestScore = score;
-		}
+		rankedMoves.push_back({ move, evaluate(t_board, t_player, move) });
 	}
 
-	return bestBoard;
+	/* We could use a priority queue here, but that is only more efficient if we 
+	   need the vector to be sorted at all times. Given that we know we will only
+	   be inserting at the end of our vector, it's quicker to sort at the end. */
+	sort(rankedMoves.begin(), rankedMoves.end(), Compare());
+
+	return rankedMoves.back();
 }
+
+////////////////////////////////////////////////////////////
 
 int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 {
