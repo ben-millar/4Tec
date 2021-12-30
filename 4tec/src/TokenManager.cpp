@@ -7,7 +7,7 @@ void TokenManager::loadTextures()
 	m_manager->loadTexture("yellow","assets/images/yellowToken.png");
 	for (auto& t : m_boardRender)
 	{
-		t.create(WINDOW_WIDTH, WINDOW_HEIGHT);
+		t.create(SCREEN_WIDTH, SCREEN_HEIGHT);
 		t.clear(sf::Color::Transparent);
 	}
 }

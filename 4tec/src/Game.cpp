@@ -51,9 +51,9 @@ void Game::loadFont()
 void Game::loadTextures()
 {
 	TextureManager* tm = TextureManager::getInstance();
-	if (WINDOW_HEIGHT < 780)
+	if (SCREEN_HEIGHT < 780)
 		tm->loadTexture("board", "assets/images/board_small.png");
-	else if (WINDOW_HEIGHT < 975)
+	else if (SCREEN_HEIGHT < 975)
 		tm->loadTexture("board", "assets/images/board_medium.png");
 	else
 		tm->loadTexture("board", "assets/images/board_large.png");
@@ -69,12 +69,12 @@ void Game::loadShader()
 {
 	m_shader.loadFromFile("assets/shader/vertShader.txt", "assets/shader/fragShader.txt");
 
-	m_shader.setUniform("windowHeight", (float)WINDOW_HEIGHT);
+	m_shader.setUniform("windowHeight", (float)m_window->getSize().y);
 
 	m_shader.setUniform("texture", sf::Shader::CurrentTexture);
 	m_shader.setUniform("tableWidth", (float)(TextureManager::getInstance()->getTexture("board")->getSize().x));
 	float h = (float)TextureManager::getInstance()->getTexture("board")->getSize().y;
-	float wh = (float)WINDOW_HEIGHT;
+	float wh = (float)m_window->getSize().y;
 	m_shader.setUniform("relativeLayerHeight", h / wh / 4.0f);
 }
 
@@ -143,5 +143,13 @@ void Game::render()
 
 sf::RenderWindow* Game::createWindow(std::string t_title)
 {
-	return new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), t_title, sf::Style::Titlebar | sf::Style::Close);
+	sf::Vector2u windowSize;
+	if (SCREEN_HEIGHT < 780u)
+		windowSize = { 531, 585 };
+	else if (SCREEN_HEIGHT < 975u)
+		windowSize = { 708, 780 };
+	else
+		windowSize = { 885, 975 };
+
+	return new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), t_title, sf::Style::Titlebar | sf::Style::Close);
 }
