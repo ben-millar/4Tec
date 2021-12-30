@@ -5,7 +5,7 @@ Move Minimax::findMove(Board* t_board, Board* t_player)
 	auto start = high_resolution_clock::now();
 
 	// Retrieve the board, discard the value
-	uint8_t move_index = minimax(*t_board, *t_player, 0).first;
+	uint8_t move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
 
 	auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(stop - start);
@@ -48,13 +48,40 @@ catch (const std::exception&)
 
 ////////////////////////////////////////////////////////////
 
-MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
+MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, AlphaBeta t_ab)
 {
 	vector<uint8_t> vm;
 	findValidMoves(t_board, vm);
 
-	Board move;
+	bool isMinimizer = t_depth % 2;
 
+	if (t_depth < MAX_DEPTH)
+	{
+		MoveValuePair best = { -1, 2147483647 };
+		MoveValuePair worst = { -1, -2147483647 };
+
+		for (uint8_t& index : vm)
+		{
+			MoveValuePair value = minimax(t_board, t_player, t_depth + 1, t_ab);
+
+			if (isMinimizer)
+			{
+				if (shouldPrune(value, best, t_ab, isMinimizer))
+					break;
+			}
+			else
+			{
+				if (shouldPrune(value, worst, t_ab, isMinimizer))
+					break;
+			}
+		}
+
+		return isMinimizer
+			? best
+			: worst;
+	}
+
+	Board move;
 	vector<MoveValuePair> rankedMoves;
 
 	for (uint8_t& index : vm)
@@ -62,20 +89,10 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 		move.reset();
 		move.set(index);
 
-		if (t_depth >= MAX_DEPTH)
-			rankedMoves.push_back({ index, evaluate(t_board, t_player, move) });
-		else
-			rankedMoves.push_back(minimax(t_board, t_player, t_depth + 1));
+		rankedMoves.push_back({ index, evaluate(t_board, t_player, move) });
 	}
 
-	/* We could use a priority queue here, but that is only more efficient if we 
-	   need the vector to be sorted at all times. Given that we know we will only
-	   be inserting at the end of our vector, it's quicker to sort at the end. */
-	sort(rankedMoves.begin(), rankedMoves.end(), Compare());
-
-	return t_depth % 2
-		? rankedMoves.front()
-		: rankedMoves.back();
+	return *max_element(rankedMoves.begin(), rankedMoves.end(), Compare());
 }
 
 ////////////////////////////////////////////////////////////
@@ -118,6 +135,26 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 	}
 
 	return value;
+}
+
+////////////////////////////////////////////////////////////
+
+bool Minimax::shouldPrune(MoveValuePair& t_value, MoveValuePair& t_best, AlphaBeta& t_ab, bool isMinimizer)
+{
+	if (isMinimizer)
+	{
+		t_best = min(t_best, t_value);
+		t_ab.beta = std::min(t_ab.beta, t_best.second);
+		return (t_ab.beta <= t_ab.alpha);
+	}
+	else
+	{
+		t_best = max(t_best, t_value);
+		t_ab.alpha = std::max(t_ab.alpha, t_best.second);
+		return (t_ab.beta <= t_ab.alpha);
+	}
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////
