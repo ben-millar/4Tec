@@ -7,12 +7,17 @@
 #include <string>
 #include <vector>
 
+// TEMP FOR DEBUGGING/OPTIMIZATION
+#include <chrono>
+//////////////////////////////////
+
 #include <GameData.h>
 
 using namespace std;
+using namespace std::chrono;
 
 // A pairing of board to value
-using BoardValuePair = pair<Board, int>;
+using MoveValuePair = pair<uint8_t, int>;
 
 class Minimax
 {
@@ -66,7 +71,7 @@ private:
 	/// <param name="t_player"></param>
 	/// <param name="t_depth"></param>
 	/// <returns></returns>
-	BoardValuePair minimax(Board& t_board, Board& t_player, int t_depth);
+	MoveValuePair minimax(Board& t_board, Board& t_player, int t_depth);
 
 	/// <summary>
 	/// 
@@ -84,6 +89,8 @@ private:
 	/// <param name=""></param>
 	void findValidMoves(Board, vector<uint8_t>&);
 
+	const int MAX_DEPTH{ 2 };
+
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
 };
@@ -94,7 +101,7 @@ private:
 class Compare
 {
 public:
-	bool operator() (BoardValuePair& p1, BoardValuePair& p2)
+	bool operator() (MoveValuePair& p1, MoveValuePair& p2)
 	{
 		return p1.second < p2.second;
 	}

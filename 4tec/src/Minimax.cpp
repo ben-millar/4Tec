@@ -2,18 +2,19 @@
 #include <iostream>
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
+	auto start = high_resolution_clock::now();
+
 	// Retrieve the board, discard the value
-	Board move = minimax(*t_board, *t_player, 0).first;
+	uint8_t move_index = minimax(*t_board, *t_player, 0).first;
 
-	int index = 0;
-
-	for (; index < 64; ++index)
-		if (move.test(index)) break;
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<milliseconds>(stop - start);
+	cout << "Minimax took: " << duration.count() / 1000.f << "s.\n";
 
 	uint8_t layer, row, col;
-	layer = index / 16;
-	row = (index - layer * 16) / 4;
-	col = index - (layer * 16 + row * 4);
+	layer = move_index / 16;
+	row = (move_index - layer * 16) / 4;
+	col = move_index - (layer * 16 + row * 4);
 
 	return Move(layer, row, col);
 }
@@ -47,22 +48,22 @@ catch (const std::exception&)
 
 ////////////////////////////////////////////////////////////
 
-BoardValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
+MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 {
 	vector<uint8_t> vm;
 	findValidMoves(t_board, vm);
 
 	Board move;
 
-	vector<BoardValuePair> rankedMoves;
+	vector<MoveValuePair> rankedMoves;
 
 	for (uint8_t& index : vm)
 	{
 		move.reset();
 		move.set(index);
 
-		if (t_depth > 1)
-			rankedMoves.push_back({ move, evaluate(t_board, t_player, move) });
+		if (t_depth >= MAX_DEPTH)
+			rankedMoves.push_back({ index, evaluate(t_board, t_player, move) });
 		else
 			rankedMoves.push_back(minimax(t_board, t_player, t_depth + 1));
 	}
@@ -81,36 +82,39 @@ BoardValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth)
 
 int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 {
-	int value{ 0 }, pCount{ 0 }, oppCount{ 0 }, _pCount{ 0 }, _oppCount{ 0 };
+	int value{ 0 }, pCount{ -1 }, _pCount{ -1 }, oppCount{ -1 };
 
 	Board opponent = t_player ^ t_board;
 
 	for (auto& wl : _winningLines)
 	{
 		pCount = (t_player & *wl).count();				// Before move
-		_pCount = ((t_move | t_player) & *wl).count();	// After move
-
 		oppCount = (opponent & *wl).count();			// Before move
-		_oppCount = ((t_move | opponent) & *wl).count();// After move
-
-		// This move wins the game
-		if (3 == pCount)
-			if (4 == _pCount)
-				return std::numeric_limits<int>::max();
-
-		// This move blocks an opponents win
-		if (3 == oppCount)
-			if (4 == _oppCount)
-				return std::numeric_limits<int>::max() / 2;
-
+		
 		// Ignore line if both players have tokens; unwinnable.
 		if (pCount && oppCount)
 			continue;
 
+		// If we have 3 tokens on this line, and our token completes the line
+		// we've won the game on this turn.
+		if (3 == pCount)
+			// We only initialise _pCount if we make it to this if condition
+			if (4 == (_pCount = ((t_move | t_player) & *wl).count()))
+				return 2147483647;
+
+		// If the opponent has 3 tokens on this line, and our token completes the line
+		// we've blocked an opponent win this turn.
+		if (3 == oppCount)
+			if (4 == ((t_move | opponent) & *wl).count())
+				return 1073741823;
+
 		// Add a value for adding to a free line, skewed towards longer lengths
-		pCount = pow(_pCount, 4.f);
-		
-		value += pCount;
+		value +=
+			-1 == _pCount // Only run .count() if it hasn't been worked out previously
+			? (_pCount = ((t_move | t_player) & *wl).count()) << _pCount
+			: _pCount << _pCount;
+
+		_pCount = -1;
 	}
 
 	return value;
