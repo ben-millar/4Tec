@@ -1,83 +1,32 @@
 #include <Minimax.h>
-#include <iostream>
-#include <sstream>
-#include <unordered_map>
+
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
-	//unordered_map<Board, uint8_t> moveMap;
+	uint8_t move_index;
 
-	//std::string file_path = "assets/data/lookup_table.txt", line, key, response;
-	//std::ifstream input(file_path.c_str(), std::ifstream::in);
-
-	//if (!input.is_open())
-	//	std::perror("Error opening file in Minimax.cpp");
-
-	//int i = 0;
-
-	//while (std::getline(input, line))
-	//{
-	//	stringstream ss(line);
-	//	std::getline(ss, key, ',');
-	//	std::getline(ss, response, ',');
-
-	//	moveMap.emplace(std::stoi(key),*response.c_str());
-	//}
-
-	//input.close();
-
-	Board b;
-	Board p;
-
-	ofstream output("assets/data/lookup_table.txt", std::ofstream::out);
-	if (!output.is_open())
-		std::perror("Error opening file in Minimax.cpp");
-
-	uint8_t response;
-	vector<uint8_t> i;
-	findValidMoves(b, i);
-
-	// Move 1
-	for (auto& _i : i)
+	if (_lookupTable.count(*t_board))
 	{
-		b.reset();
-		b.set(_i);
-
-		response = minimax(b, p, 0, AlphaBeta()).first;
-
-		output << b.to_ullong() << "," << (int)response << "\n";
-
-		b.set(response);
-		p.set(response);
-
-		// Move 2
-		vector<uint8_t> j;
-		findValidMoves(b, j);
-
-		for (auto& _j : j)
-		{
-			b.set(_j);
-
-			response = minimax(b, p, 0, AlphaBeta()).first;
-
-			output << b.to_ullong() << "," << response << "\n";
-
-			b.set(_j, false);
-		}
+		move_index = _lookupTable.at(*t_board);
+		cout << "Cache hit\n";
 	}
+	else
+	{
+		// Retrieve the board, discard the value
+		move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
+	}
+	//uint8_t move_index = 
+	//	_lookupTable.count(*t_board)
+	//	? _lookupTable.at(*t_board)
+	//	: minimax(*t_board, *t_player, 0, AlphaBeta()).first;
 
-	output.close();
+	
 
-	//// Retrieve the board, discard the value
-	//uint8_t move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
+	uint8_t layer, row, col;
+	layer = move_index / 16;
+	row = (move_index - layer * 16) / 4;
+	col = move_index - (layer * 16 + row * 4);
 
-	//uint8_t layer, row, col;
-	//layer = move_index / 16;
-	//row = (move_index - layer * 16) / 4;
-	//col = move_index - (layer * 16 + row * 4);
-
-	//return Move(layer, row, col);
-
-	return Move();
+	return Move(layer, row, col);
 }
 
 ////////////////////////////////////////////////////////////
@@ -89,7 +38,7 @@ try
 	std::ifstream input(file_path.c_str(), std::ifstream::in);
 
 	if (!input.is_open())
-		std::perror("Error opening file in Minimax.cpp");
+		std::perror("Error opening file in BoardManager.cpp");
 
 	int i = 0;
 
@@ -98,6 +47,35 @@ try
 		// Flip string (bitset initialises from right-to-left
 		std::reverse(line.begin(), line.end());
 		_winningLines.at(i++) = new Board{ line.c_str() };
+	}
+
+	input.close();
+}
+catch (const std::exception&)
+{
+
+}
+
+////////////////////////////////////////////////////////////
+
+void Minimax::loadLookupTable()
+try
+{
+	std::string file_path = "assets/data/lookup_table.txt", line, key, response;
+	std::ifstream input(file_path.c_str(), std::ifstream::in);
+
+	if (!input.is_open())
+		std::perror("Error opening file in Minimax.cpp");
+
+	int i = 0;
+
+	while (std::getline(input, line))
+	{
+		stringstream ss(line);
+		std::getline(ss, key, ',');
+		std::getline(ss, response, ',');
+
+		_lookupTable.emplace(Board(stoull(key)), stoi(response));
 	}
 
 	input.close();

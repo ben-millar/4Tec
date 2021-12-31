@@ -3,8 +3,11 @@
 
 #include <algorithm>
 #include <array>
+#include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <unordered_map>
 #include <vector>
 
 #include <GameData.h>
@@ -56,12 +59,17 @@ private:
 	/// <summary>
 	/// Default c'tor, calls loadWinningLines
 	/// </summary>
-	Minimax() { loadWinningLines(); }
+	Minimax() { loadWinningLines(); loadLookupTable(); }
 
 	/// <summary>
 	/// Loads the winning lines (bitsets with winning combos set) from text file
 	/// </summary>
 	void loadWinningLines();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void loadLookupTable();
 
 	/// <summary>
 	/// Recursive minimax algorithm which determines the best move for a given board
@@ -127,6 +135,8 @@ private:
 
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
+
+	unordered_map<Board, uint8_t> _lookupTable;
 };
 
 /// <summary>
