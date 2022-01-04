@@ -27,6 +27,7 @@ public:
 	/// <param name="t_player"> The player that made the move </param>
 	void onNotify(Move t_move, Player t_player)override
 	{
+		std::shared_lock<std::shared_mutex> lock(m_mutex);
 		if (t_player == m_turn && validateMove(t_move))
 		{
 			m_game->makeMove(t_move);
@@ -45,8 +46,6 @@ public:
 			? Player::RED
 			: Player::YELLOW;
 	}
-
-	std::shared_mutex m_mutex;
 private:
 
 	bool validateMove(Move t_move)
@@ -65,6 +64,7 @@ private:
 	GameManager* m_game;
 	TokenManager* m_tokens;
 	Player m_turn;
+	std::shared_mutex m_mutex;
 };
 
 #endif

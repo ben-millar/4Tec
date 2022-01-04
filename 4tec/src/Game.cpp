@@ -150,17 +150,17 @@ void Game::setupGame(GameType t_type)
 		break;
 	case GameType::PVP:
 		m_player = new PlayerInput();
-		m_player->addObserver(m_inputs);
 		m_network.client("192.168.8.148", 420);
+		m_player->addObserver(m_inputs);
 		m_network.addObserver(m_inputs);
-		m_network.trySend({ '1','1','1' });
 		m_inputs->toggleTurn();
+		m_network.trySend({ '1','1','1' });
 		break;
 	case GameType::LAN:
 		m_player = new PlayerInput();
+		m_network.host("192.168.8.148", 420);
 		m_player->addObserver(m_inputs);
 		m_network.addObserver(m_inputs);
-		m_network.host("192.168.8.148", 420);
 		m_inputs->toggleTurn();
 		break;
 	default:

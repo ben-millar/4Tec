@@ -92,7 +92,7 @@ void Network::tryRecv(Network& t_instance)
 		uint8_t level = t_instance.m_data[0];
 		uint8_t row = t_instance.m_data[1];
 		uint8_t col = t_instance.m_data[2];
-		//t_instance.notify({ level-'0',row - '0',col - '0'}, Player::RED);
+		t_instance.notify({ level-'0',row - '0',col - '0'}, Player::RED);
 	}
 }
 
