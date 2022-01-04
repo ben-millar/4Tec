@@ -14,12 +14,38 @@
 #include <TextureManager.h>
 #include <TokenManager.h>
 
+#include <Network.h>
+#include <PlayerInput.h>
+#include <InputManager.h>
+#include <AI.h>
+
 using namespace std;
+
+enum class GameType
+{
+	PVE,
+	AIvsAI,
+	PVP,
+	LAN
+};
 
 class Game
 {
 public:
 	Game() = default;
+	//Game(char choice)
+	//{
+	//	const char* ip = "192.168.8.148";
+	//	const int port = 420;
+	//	if (choice == '1')
+	//	{
+	//		m_network.host(ip,port);
+	//	}
+	//	else
+	//	{
+	//		m_network.client(ip,port);
+	//	}
+	//}
 	~Game() = default;
 
 	/// <summary>
@@ -55,6 +81,17 @@ public:
 	/// </summary>
 	void render();
 
+
+	/// <summary>
+	/// Function that changes the input types.
+	/// Allows the game to run:
+	/// Player Vs AI
+	/// AI Vs AI
+	/// Player Vs Local Player (Same computer)
+	/// Player Vs Local Network Player (Same Network)
+	/// </summary>
+	void setupGame(GameType t_type);
+
 private:
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
@@ -70,10 +107,16 @@ private:
 	sf::Sprite m_boardSprite;
 	sf::Sprite m_shadowSprite;
 
+	Network m_network;
+
 	sf::Shader m_shader;
 
 	GameManager* _gm;
-	TokenManager m_tokens;
+	TokenManager* m_tokens;
+	InputManager* m_inputs;
+
+	PlayerInput* m_player;
+	AI* m_ai;
 };
 
 #endif

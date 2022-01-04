@@ -1,10 +1,16 @@
-#include <Input.h>
+#include <PlayerInput.h>
 
-////////////////////////////////////////////////////////////
-
-std::tuple<uint8_t, uint8_t, uint8_t> Input::calculateBoardPiece(sf::Vector2i t_mousePos)
+void PlayerInput::Click(sf::Vector2i t_mouseClick)
 {
-	uint8_t layer{ 255 }, row{ 255 }, col{ 255 };
+	Move move = calculateBoardPiece(t_mouseClick);
+	notify(move, m_type);
+}
+
+//*****************************************************************************
+
+Move PlayerInput::calculateBoardPiece(sf::Vector2i t_mousePos)
+{
+	uint8_t layer{ 9 }, row{ 9 }, col{ 9 };
 
 	static const sf::Vector2u boardSize =
 		TextureManager::getInstance()->getTexture("board")->getSize();
@@ -30,12 +36,12 @@ std::tuple<uint8_t, uint8_t, uint8_t> Input::calculateBoardPiece(sf::Vector2i t_
 	if (t_mousePos.x > xOffset && t_mousePos.x < xOffset + width)
 		col = (uint8_t)((t_mousePos.x - xOffset) / (width / 4));
 
-	return std::tuple<uint8_t, uint8_t, uint8_t>(layer, row, col);
+	return { layer,row,col };
 }
 
-////////////////////////////////////////////////////////////
+//*****************************************************************************
 
-uint8_t Input::getRow(float t_rowPct)
+uint8_t PlayerInput::getRow(float t_rowPct)
 {
 	// if the pct exceeds these values its in that row
 	static const std::array<float, 3> rowValues{

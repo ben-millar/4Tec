@@ -5,11 +5,15 @@ void Game::run()
 	m_window = createWindow("AI | 4Tec");
 	m_window->setKeyRepeatEnabled(false);
 
+	_gm = GameManager::getInstance();
+	m_tokens = TokenManager::getInstance();
+	m_inputs = InputManager::getInstance();
+
+	setupGame(GameType::LAN);
+
 	loadFont();
 	loadTextures();
 	loadShader();
-
-	_gm = GameManager::getInstance();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -31,6 +35,8 @@ void Game::run()
 		update(dT);
 		render();
 	}
+	m_network.disconnect();
+	m_network.~Network();
 }
 
 ////////////////////////////////////////////////////////////
@@ -60,7 +66,7 @@ void Game::loadTextures()
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
 
-	m_tokens.loadTextures();
+	m_tokens->loadTextures();
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,28 +101,15 @@ void Game::processEvents()
 				break;
 			case sf::Keyboard::R:
 				_gm->resetGame();
-				m_tokens.reset();
+				m_tokens->reset();
 				break;
 			default:
 				break;
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
-			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
-
-			if (_gm->makeMove(move))
-			{
-				m_tokens.placePiece(move);
-				render(); // Sneak in a draw call while the AI thinks
-
-				Board* b = _gm->getGameBoard();
-				Board* p = _gm->getCurrentPlayerBoard();
-
-				Move AIMove = Minimax::getInstance()->findMove(b, p);
-
-				if (_gm->makeMove(AIMove))
-					m_tokens.placePiece(AIMove);
-			}
+			if (m_player)
+				m_player->Click(sf::Mouse::getPosition(*m_window));
 		}
 	}
 }
@@ -135,9 +128,44 @@ void Game::render()
 
 	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens, &m_shader);
+	m_window->draw(*m_tokens, &m_shader);
 
 	m_window->display();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Game::setupGame(GameType t_type)
+{
+	switch (t_type)
+	{
+	case GameType::PVE:
+		m_player = new PlayerInput();
+		m_ai = new AI();
+		m_player->addObserver(m_inputs);
+		m_player->addObserver(m_ai);
+		break;
+	case GameType::AIvsAI:
+
+		break;
+	case GameType::PVP:
+		m_player = new PlayerInput();
+		m_player->addObserver(m_inputs);
+		m_network.client("192.168.8.148", 420);
+		m_network.addObserver(m_inputs);
+		m_network.trySend({ '1','1','1' });
+		m_inputs->toggleTurn();
+		break;
+	case GameType::LAN:
+		m_player = new PlayerInput();
+		m_player->addObserver(m_inputs);
+		m_network.addObserver(m_inputs);
+		m_network.host("192.168.8.148", 420);
+		m_inputs->toggleTurn();
+		break;
+	default:
+		break;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,6 @@
 #define GAME_MANAGER_H
 
 #include <iostream>
-
 #include <BoardManager.h>
 #include <GameData.h>
 
