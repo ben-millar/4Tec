@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Pattern">
       <UniqueIdentifier>{2f30eb4c-4dd6-4cbf-a311-c19762fc7d6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Screens">
+      <UniqueIdentifier>{7d432bca-5b68-4d8f-b20b-fa2e2b9b0b1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="include\Observer.h">
       <Filter>Header Files\Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BaseScreen.h">
+      <Filter>Header Files\Screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

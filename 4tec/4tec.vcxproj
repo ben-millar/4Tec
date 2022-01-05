@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AI.h" />
+    <ClInclude Include="include\BaseScreen.h" />
     <ClInclude Include="include\BoardManager.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameData.h" />

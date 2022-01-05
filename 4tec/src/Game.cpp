@@ -83,6 +83,7 @@ void Game::processEvents()
 	sf::Event e;
 	while (m_window->pollEvent(e))
 	{
+		m_currentScreen->processEvents(e);
 		if (e.type == sf::Event::Closed)
 			m_window->close();
 		else if (e.type == sf::Event::KeyPressed)
@@ -109,6 +110,7 @@ void Game::processEvents()
 
 void Game::update(sf::Time t_dTime)
 {
+	m_currentScreen->update(t_dTime);
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,6 +118,8 @@ void Game::update(sf::Time t_dTime)
 void Game::render()
 {
 	m_window->clear(sf::Color::Black);
+
+	m_currentScreen->render(m_window);
 
 	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
@@ -167,4 +171,20 @@ sf::RenderWindow* Game::createWindow(std::string t_title)
 		windowSize = { 885, 975 };
 
 	return new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), t_title, sf::Style::Titlebar | sf::Style::Close);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Game::initScreens()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Game::changeScreen(Screens t_screen)
+{
+	if (m_currentScreen)
+		m_currentScreen->onExit();
+	m_currentScreen = m_screenMapping.at(t_screen);
+	m_currentScreen->onEnter();
 }

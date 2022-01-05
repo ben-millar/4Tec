@@ -17,6 +17,9 @@
 #include <PlayerInput.h>
 #include <AI.h>
 
+#include <BaseScreen.h>
+#include <unordered_map>
+
 using namespace std;
 
 enum class GameType
@@ -85,6 +88,11 @@ private:
 	sf::RenderWindow* createWindow(std::string t_title);
 	sf::RenderWindow* m_window{ nullptr };
 
+	/// <summary>
+	/// Function to create the screens that will be used throughout the project
+	/// </summary>
+	void initScreens();
+
 	sf::Font m_robotoTTF;
 	sf::Text m_text;
 
@@ -100,6 +108,8 @@ private:
 
 	PlayerInput m_player;
 	AI* m_ai;
+	TokenManager m_tokens;
+	BaseScreen* m_currentScreen;
 };
 
 #endif
