@@ -9,7 +9,7 @@ void Game::run()
 	m_tokens = TokenManager::getInstance();
 	m_inputs = InputManager::getInstance();
 
-	setupGame(GameType::LAN);
+	setupGame(GameType::LAN_HOST);
 
 	loadFont();
 	loadTextures();
@@ -35,8 +35,7 @@ void Game::run()
 		update(dT);
 		render();
 	}
-	m_network.disconnect();
-	m_network.~Network();
+	delete m_network;
 }
 
 ////////////////////////////////////////////////////////////
@@ -108,8 +107,7 @@ void Game::processEvents()
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
-			if (m_player)
-				m_player->Click(sf::Mouse::getPosition(*m_window));
+			m_player.Click(sf::Mouse::getPosition(*m_window));
 		}
 	}
 }
@@ -140,32 +138,27 @@ void Game::setupGame(GameType t_type)
 	switch (t_type)
 	{
 	case GameType::PVE:
-		m_player = new PlayerInput();
 		m_ai = new AI();
-		m_player->addObserver(m_inputs);
-		m_player->addObserver(m_ai);
+		m_player.addObserver(m_ai);
 		break;
-	case GameType::AIvsAI:
-
-		break;
-	case GameType::PVP:
-		m_player = new PlayerInput();
-		m_network.client("192.168.8.148", 420);
-		m_player->addObserver(m_inputs);
-		m_network.addObserver(m_inputs);
+	case GameType::LAN_CLIENT:
+		m_network = new Network();
+		m_player.addNetwork(m_network);
+		m_network->client("192.168.8.148", 420);
+		m_network->addObserver(m_inputs);
 		m_inputs->toggleTurn();
-		m_network.trySend({ '1','1','1' });
 		break;
-	case GameType::LAN:
-		m_player = new PlayerInput();
-		m_network.host("192.168.8.148", 420);
-		m_player->addObserver(m_inputs);
-		m_network.addObserver(m_inputs);
-		m_inputs->toggleTurn();
+	case GameType::LAN_HOST:
+		m_network = new Network();
+		m_player.addNetwork(m_network);
+		m_network->host("192.168.8.148", 420);
+		m_network->addObserver(m_inputs);
 		break;
 	default:
 		break;
 	}
+
+	m_player.addObserver(m_inputs);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

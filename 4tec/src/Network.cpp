@@ -2,6 +2,7 @@
 
 Network::~Network()
 {
+	disconnect();
 	m_terminateThreads = true;
 	if (m_recvThread.joinable())
 		m_recvThread.join();
@@ -85,15 +86,13 @@ void Network::trySend(Move t_move)
 
 void Network::tryRecv(Network& t_instance)
 {
-	while (!t_instance.m_terminateThreads)
-	{
-		int check = recv(t_instance.m_socket, &t_instance.m_data[0], MAX_BYTES, FLAGS);
-		if (check == SOCKET_ERROR) break;
-		uint8_t level = t_instance.m_data[0];
-		uint8_t row = t_instance.m_data[1];
-		uint8_t col = t_instance.m_data[2];
-		t_instance.notify({ level-'0',row - '0',col - '0'}, Player::RED);
-	}
+	int check = recv(t_instance.m_socket, &t_instance.m_data[0], MAX_BYTES, FLAGS);
+	if (check == SOCKET_ERROR) return;
+	uint8_t level = t_instance.m_data[0];
+	uint8_t row = t_instance.m_data[1];
+	uint8_t col = t_instance.m_data[2];
+	t_instance.notify({ level,row,col}, Player::RED);
+	t_instance.initThreads();
 }
 
 //*****************************************************************************
@@ -120,6 +119,8 @@ void Network::waitForConnection(Network& t_caller)
 
 void Network::initThreads()
 {
+	if (m_recvThread.joinable())
+		m_recvThread.join();
 	m_recvThread = std::thread(tryRecv, std::ref(*this));
-	//m_recvThread.detach();
+	m_recvThread.detach();
 }

@@ -61,6 +61,16 @@ public:
 	/// </summary>
 	void disconnect();
 
+	/// <summary>
+	/// Allows the program to know if the network 
+	/// is running
+	/// </summary>
+	/// <returns> if the threads are active (i.e) if host or client was called </returns>
+	bool getActive()
+	{
+		return !m_terminateThreads;
+	};
+
 protected:
 
 	/// <summary>

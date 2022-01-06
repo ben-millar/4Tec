@@ -4,6 +4,8 @@ void PlayerInput::Click(sf::Vector2i t_mouseClick)
 {
 	Move move = calculateBoardPiece(t_mouseClick);
 	notify(move, m_type);
+	if (m_network)
+		m_network->trySend(move);
 }
 
 //*****************************************************************************

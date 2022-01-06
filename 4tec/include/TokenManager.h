@@ -32,7 +32,7 @@ private:
 	TokenManager() = default;
 	~TokenManager() = default;
 
-	TextureManager* m_manager;
+	TextureManager* m_manager{nullptr};
 	std::array<sf::RenderTexture, 5> m_boardRender;
 	sf::Sprite m_board;
 	bool m_red{ false };

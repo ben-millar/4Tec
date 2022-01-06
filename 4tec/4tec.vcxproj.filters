@@ -31,9 +31,6 @@
     <Filter Include="Resource Files\Data">
       <UniqueIdentifier>{9be0afb4-ccbb-41ce-9a56-4b0c1f75d834}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Screens">
-      <UniqueIdentifier>{807b8f2e-2e3f-4dbc-ba2f-04f191756a52}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">

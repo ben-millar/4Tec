@@ -24,9 +24,8 @@ using namespace std;
 enum class GameType
 {
 	PVE,
-	AIvsAI,
-	PVP,
-	LAN
+	LAN_CLIENT,
+	LAN_HOST
 };
 
 class Game
@@ -107,7 +106,7 @@ private:
 	sf::Sprite m_boardSprite;
 	sf::Sprite m_shadowSprite;
 
-	Network m_network;
+	Network* m_network;
 
 	sf::Shader m_shader;
 
@@ -115,7 +114,7 @@ private:
 	TokenManager* m_tokens;
 	InputManager* m_inputs;
 
-	PlayerInput* m_player;
+	PlayerInput m_player;
 	AI* m_ai;
 };
 
