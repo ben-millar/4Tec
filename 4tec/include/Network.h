@@ -9,13 +9,12 @@
 #include <thread>
 #include <shared_mutex>
 
-
 #pragma comment(lib,"ws2_32.lib")
 
 #define MAX_BYTES 4
 #define FLAGS 0
 
-volatile class Network : public Subject
+class Network : public Subject
 {
 public:
 	/// <summary>

@@ -165,8 +165,6 @@
     <ClInclude Include="include\GameData.h" />
     <ClInclude Include="include\GameManager.h" />
     <ClInclude Include="include\Globals.h" />
-    <ClInclude Include="include\Input.h" />
-    <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\Minimax.h" />
     <ClInclude Include="include\Network.h" />
     <ClInclude Include="include\Observer.h" />

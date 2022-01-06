@@ -9,14 +9,12 @@
 
 #include <GameManager.h>
 #include <Globals.h>
-#include <Input.h>
 #include <Minimax.h>
 #include <TextureManager.h>
 #include <TokenManager.h>
 
 #include <Network.h>
 #include <PlayerInput.h>
-#include <InputManager.h>
 #include <AI.h>
 
 using namespace std;
@@ -32,19 +30,6 @@ class Game
 {
 public:
 	Game() = default;
-	//Game(char choice)
-	//{
-	//	const char* ip = "192.168.8.148";
-	//	const int port = 420;
-	//	if (choice == '1')
-	//	{
-	//		m_network.host(ip,port);
-	//	}
-	//	else
-	//	{
-	//		m_network.client(ip,port);
-	//	}
-	//}
 	~Game() = default;
 
 	/// <summary>
@@ -112,7 +97,6 @@ private:
 
 	GameManager* _gm;
 	TokenManager* m_tokens;
-	InputManager* m_inputs;
 
 	PlayerInput m_player;
 	AI* m_ai;

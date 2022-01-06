@@ -1,6 +1,6 @@
 #include <PlayerInput.h>
 
-void PlayerInput::Click(sf::Vector2i t_mouseClick)
+void PlayerInput::GenerateMove(sf::Vector2i t_mouseClick)
 {
 	Move move = calculateBoardPiece(t_mouseClick);
 	notify(move, m_type);

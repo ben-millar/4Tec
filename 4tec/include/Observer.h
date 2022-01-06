@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <GameData.h>
-#include <Input.h>
 
 class Observer
 {

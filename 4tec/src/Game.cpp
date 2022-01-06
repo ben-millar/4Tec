@@ -7,7 +7,6 @@ void Game::run()
 
 	_gm = GameManager::getInstance();
 	m_tokens = TokenManager::getInstance();
-	m_inputs = InputManager::getInstance();
 
 	setupGame(GameType::LAN_HOST);
 
@@ -107,7 +106,7 @@ void Game::processEvents()
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
-			m_player.Click(sf::Mouse::getPosition(*m_window));
+			m_player.GenerateMove(sf::Mouse::getPosition(*m_window));
 		}
 	}
 }
@@ -145,20 +144,20 @@ void Game::setupGame(GameType t_type)
 		m_network = new Network();
 		m_player.addNetwork(m_network);
 		m_network->client("192.168.8.148", 420);
-		m_network->addObserver(m_inputs);
-		m_inputs->toggleTurn();
+		m_network->addObserver(_gm);
+		_gm->swapPlayers();
 		break;
 	case GameType::LAN_HOST:
 		m_network = new Network();
 		m_player.addNetwork(m_network);
 		m_network->host("192.168.8.148", 420);
-		m_network->addObserver(m_inputs);
+		m_network->addObserver(_gm);
 		break;
 	default:
 		break;
 	}
 
-	m_player.addObserver(m_inputs);
+	m_player.addObserver(_gm);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
