@@ -149,9 +149,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BoardManager.cpp" />
+    <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameManager.cpp" />
+    <ClCompile Include="src\Gameplay.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainMenu.cpp" />
     <ClCompile Include="src\Minimax.cpp" />
     <ClCompile Include="src\Network.cpp" />
     <ClCompile Include="src\PlayerInput.cpp" />
@@ -162,10 +165,14 @@
     <ClInclude Include="include\AI.h" />
     <ClInclude Include="include\BaseScreen.h" />
     <ClInclude Include="include\BoardManager.h" />
+    <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\FunctionPointer.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameData.h" />
     <ClInclude Include="include\GameManager.h" />
+    <ClInclude Include="include\Gameplay.h" />
     <ClInclude Include="include\Globals.h" />
+    <ClInclude Include="include\MainMenu.h" />
     <ClInclude Include="include\Minimax.h" />
     <ClInclude Include="include\Network.h" />
     <ClInclude Include="include\Observer.h" />

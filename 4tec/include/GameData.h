@@ -14,4 +14,14 @@ enum class Player : uint8_t
 	YELLOW
 };
 
+enum class GameType: uint8_t
+{
+	EASY,
+	MEDIUM, 
+	HARD,
+	LOCAL,
+	HOST,
+	CLIENT
+};
+
 #endif

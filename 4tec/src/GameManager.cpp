@@ -36,6 +36,7 @@ void GameManager::resetGame()
 {
 	_gameBoard.reset();
 	_currentPlayerTokens.reset();
+	_tokens->reset();
 	_gameOver = false;
 }
 
@@ -60,7 +61,7 @@ void GameManager::onNotify(Move t_move, Player t_player)
 
 			_gameOver = true;
 		}
-		m_tokens->placePiece(t_move);
+		_tokens->placePiece(t_move);
 
 		swapPlayers();
 	}

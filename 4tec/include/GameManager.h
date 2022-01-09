@@ -29,12 +29,12 @@ public:
 
 	void swapPlayers();
 private:
-	GameManager() { m_tokens = TokenManager::getInstance(); }
+	GameManager() { _tokens = TokenManager::getInstance(); }
 	BoardManager _boardManager;
 	Board _gameBoard, _currentPlayerTokens;
 	Player _currentPlayer{ Player::YELLOW };
 	bool _gameOver{ false };
-	TokenManager* m_tokens;
+	TokenManager* _tokens;
 
 };
 

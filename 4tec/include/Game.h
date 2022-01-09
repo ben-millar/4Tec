@@ -1,33 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <vector>
-#include <iostream>
-#include <sstream>
-
 #include <SFML/Graphics.hpp>
 
-#include <GameManager.h>
-#include <Globals.h>
-#include <Minimax.h>
-#include <TextureManager.h>
-#include <TokenManager.h>
-
-#include <Network.h>
-#include <PlayerInput.h>
-#include <AI.h>
-
-#include <BaseScreen.h>
-#include <unordered_map>
+#include <MainMenu.h>
+#include <Gameplay.h>
 
 using namespace std;
-
-enum class GameType
-{
-	AI,
-	LAN_CLIENT,
-	LAN_HOST
-};
 
 class Game
 {
@@ -44,13 +23,6 @@ public:
 	/// Loads in fonts from file
 	/// </summary>
 	void loadFont();
-
-	/// <summary>
-	/// Loads in and assigns textures
-	/// </summary>
-	void loadTextures();
-
-	void loadShader();
 
 	/// <summary>
 	/// Handles system events (input, etc.)
@@ -88,27 +60,9 @@ private:
 	sf::RenderWindow* createWindow(std::string t_title);
 	sf::RenderWindow* m_window{ nullptr };
 
-	/// <summary>
-	/// Function to create the screens that will be used throughout the project
-	/// </summary>
-	void initScreens();
-
 	sf::Font m_robotoTTF;
 	sf::Text m_text;
-
-	sf::Sprite m_boardSprite;
-	sf::Sprite m_shadowSprite;
-
-	Network* m_network;
-
-	sf::Shader m_shader;
-
-	GameManager* _gm;
-	TokenManager* m_tokens;
-
-	PlayerInput m_player;
-	AI* m_ai;
-	TokenManager m_tokens;
+	
 	BaseScreen* m_currentScreen;
 };
 

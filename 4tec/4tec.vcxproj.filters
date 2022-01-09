@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Screens">
       <UniqueIdentifier>{7d432bca-5b68-4d8f-b20b-fa2e2b9b0b1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Screens">
+      <UniqueIdentifier>{0faabaa5-6e16-418c-8cc2-fbd980d1e946}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
@@ -65,6 +68,15 @@
     </ClCompile>
     <ClCompile Include="src\PlayerInput.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu.cpp">
+      <Filter>Source Files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gameplay.cpp">
+      <Filter>Source Files\Screens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +121,18 @@
     </ClInclude>
     <ClInclude Include="include\BaseScreen.h">
       <Filter>Header Files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MainMenu.h">
+      <Filter>Header Files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Gameplay.h">
+      <Filter>Header Files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FunctionPointer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
