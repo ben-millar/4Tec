@@ -2,11 +2,12 @@
 #define GAME_MANAGER_H
 
 #include <iostream>
-
 #include <BoardManager.h>
 #include <GameData.h>
+#include <Observer.h>
+#include <TokenManager.h>
 
-class GameManager
+class GameManager : public Observer
 {
 public:
 	static GameManager* const getInstance() {
@@ -24,14 +25,17 @@ public:
 	Board* getCurrentPlayerBoard() { return &_currentPlayerTokens; }
 	Board* getGameBoard() { return &_gameBoard; }
 
+	void onNotify(Move t_move, Player t_player);
+
+	void swapPlayers();
 private:
-	GameManager() {}
+	GameManager() { m_tokens = TokenManager::getInstance(); }
 	BoardManager _boardManager;
 	Board _gameBoard, _currentPlayerTokens;
 	Player _currentPlayer{ Player::YELLOW };
 	bool _gameOver{ false };
+	TokenManager* m_tokens;
 
-	void swapPlayers();
 };
 
 #endif

@@ -9,12 +9,22 @@
 
 #include <GameManager.h>
 #include <Globals.h>
-#include <Input.h>
 #include <Minimax.h>
 #include <TextureManager.h>
 #include <TokenManager.h>
 
+#include <Network.h>
+#include <PlayerInput.h>
+#include <AI.h>
+
 using namespace std;
+
+enum class GameType
+{
+	PVE,
+	LAN_CLIENT,
+	LAN_HOST
+};
 
 class Game
 {
@@ -55,6 +65,17 @@ public:
 	/// </summary>
 	void render();
 
+
+	/// <summary>
+	/// Function that changes the input types.
+	/// Allows the game to run:
+	/// Player Vs AI
+	/// AI Vs AI
+	/// Player Vs Local Player (Same computer)
+	/// Player Vs Local Network Player (Same Network)
+	/// </summary>
+	void setupGame(GameType t_type);
+
 private:
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
@@ -70,10 +91,15 @@ private:
 	sf::Sprite m_boardSprite;
 	sf::Sprite m_shadowSprite;
 
+	Network* m_network;
+
 	sf::Shader m_shader;
 
 	GameManager* _gm;
-	TokenManager m_tokens;
+	TokenManager* m_tokens;
+
+	PlayerInput m_player;
+	AI* m_ai;
 };
 
 #endif

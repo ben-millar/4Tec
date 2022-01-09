@@ -5,11 +5,14 @@ void Game::run()
 	m_window = createWindow("AI | 4Tec");
 	m_window->setKeyRepeatEnabled(false);
 
+	_gm = GameManager::getInstance();
+	m_tokens = TokenManager::getInstance();
+
+	setupGame(GameType::LAN_HOST);
+
 	loadFont();
 	loadTextures();
 	loadShader();
-
-	_gm = GameManager::getInstance();
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -31,6 +34,7 @@ void Game::run()
 		update(dT);
 		render();
 	}
+	delete m_network;
 }
 
 ////////////////////////////////////////////////////////////
@@ -60,7 +64,7 @@ void Game::loadTextures()
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
 
-	m_tokens.loadTextures();
+	m_tokens->loadTextures();
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,28 +99,14 @@ void Game::processEvents()
 				break;
 			case sf::Keyboard::R:
 				_gm->resetGame();
-				m_tokens.reset();
+				m_tokens->reset();
 				break;
 			default:
 				break;
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
-			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
-
-			if (_gm->makeMove(move))
-			{
-				m_tokens.placePiece(move);
-				render(); // Sneak in a draw call while the AI thinks
-
-				Board* b = _gm->getGameBoard();
-				Board* p = _gm->getCurrentPlayerBoard();
-
-				Move AIMove = Minimax::getInstance()->findMove(b, p);
-
-				if (_gm->makeMove(AIMove))
-					m_tokens.placePiece(AIMove);
-			}
+			m_player.GenerateMove(sf::Mouse::getPosition(*m_window));
 		}
 	}
 }
@@ -135,9 +125,39 @@ void Game::render()
 
 	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens, &m_shader);
+	m_window->draw(*m_tokens, &m_shader);
 
 	m_window->display();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Game::setupGame(GameType t_type)
+{
+	switch (t_type)
+	{
+	case GameType::PVE:
+		m_ai = new AI();
+		m_player.addObserver(m_ai);
+		break;
+	case GameType::LAN_CLIENT:
+		m_network = new Network();
+		m_player.addNetwork(m_network);
+		m_network->client("192.168.8.148", 420);
+		m_network->addObserver(_gm);
+		_gm->swapPlayers();
+		break;
+	case GameType::LAN_HOST:
+		m_network = new Network();
+		m_player.addNetwork(m_network);
+		m_network->host("192.168.8.148", 420);
+		m_network->addObserver(_gm);
+		break;
+	default:
+		break;
+	}
+
+	m_player.addObserver(_gm);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

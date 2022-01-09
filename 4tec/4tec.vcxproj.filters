@@ -31,15 +31,15 @@
     <Filter Include="Resource Files\Data">
       <UniqueIdentifier>{9be0afb4-ccbb-41ce-9a56-4b0c1f75d834}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Pattern">
+      <UniqueIdentifier>{2f30eb4c-4dd6-4cbf-a311-c19762fc7d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TokenManager.cpp">
@@ -57,15 +57,18 @@
     <ClCompile Include="src\Minimax.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GameData.h">
@@ -85,6 +88,21 @@
     </ClInclude>
     <ClInclude Include="include\Minimax.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Network.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PlayerInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Subject.h">
+      <Filter>Header Files\Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Observer.h">
+      <Filter>Header Files\Pattern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
