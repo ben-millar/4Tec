@@ -1,5 +1,12 @@
 #include <GameManager.h>
 
+GameManager::GameManager()
+{
+	_tokenManager.loadTextures();
+}
+
+////////////////////////////////////////////////////////////
+
 bool GameManager::makeMove(Move t_move)
 {
 	if (_gameOver) return false;
@@ -24,6 +31,8 @@ bool GameManager::makeMove(Move t_move)
 		
 		swapPlayers();
 
+		_tokenManager.placePiece(t_move);
+
 		return true;
 	}
 
@@ -36,6 +45,7 @@ void GameManager::resetGame()
 {
 	_gameBoard.reset();
 	_currentPlayerTokens.reset();
+	_tokenManager.reset();
 	_gameOver = false;
 }
 

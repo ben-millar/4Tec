@@ -11,6 +11,16 @@ void Game::run()
 
 	_gm = GameManager::getInstance();
 
+	if (GameType::ONLINE == _gameType)
+	{
+		_network = new Network();
+
+		if (NetworkType::CLIENT == _networkType)
+			_network->client("149.153.106.163", 420);
+		else
+			_network->host("149.153.106.163", 420);
+	}
+
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
 	const sf::Time MS_PER_UPDATE = sf::seconds(1 / 60.0f);
@@ -59,8 +69,6 @@ void Game::loadTextures()
 		tm->loadTexture("board", "assets/images/board_large.png");
 
 	m_boardSprite.setTexture(*tm->getTexture("board"));
-
-	m_tokens.loadTextures();
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,7 +103,6 @@ void Game::processEvents()
 				break;
 			case sf::Keyboard::R:
 				_gm->resetGame();
-				m_tokens.reset();
 				break;
 			default:
 				break;
@@ -106,16 +113,28 @@ void Game::processEvents()
 
 			if (_gm->makeMove(move))
 			{
-				m_tokens.placePiece(move);
-				render(); // Sneak in a draw call while the AI thinks
+				render(); // Sneak in a draw call while we wait for next move
 
-				Board* b = _gm->getGameBoard();
-				Board* p = _gm->getCurrentPlayerBoard();
+				if (GameType::AI == _gameType)
+				{
+					Board* b = _gm->getGameBoard();
+					Board* p = _gm->getCurrentPlayerBoard();
 
-				Move AIMove = Minimax::getInstance()->findMove(b, p);
+					Move AIMove = Minimax::getInstance()->findMove(b, p);
 
-				if (_gm->makeMove(AIMove))
-					m_tokens.placePiece(AIMove);
+					_gm->makeMove(AIMove);
+				}
+				else if (GameType::LOCAL == _gameType)
+				{
+					// Do nothing
+				}
+				else if (GameType::ONLINE == _gameType)
+				{
+					_network->trySend(move);
+
+					Move m = _network->tryRecv();
+					_gm->makeMove(m);
+				}
 			}
 		}
 	}
@@ -135,7 +154,7 @@ void Game::render()
 
 	m_window->draw(m_boardSprite, &m_shader);
 	m_window->draw(m_text);
-	m_window->draw(m_tokens, &m_shader);
+	m_window->draw(_gm->getTokenSprite(), &m_shader);
 
 	m_window->display();
 }

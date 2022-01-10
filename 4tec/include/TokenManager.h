@@ -21,7 +21,8 @@ public:
 
 	void reset();
 
-	operator sf::Drawable&() { return m_board; }
+	sf::Sprite& getSprite() { return m_board; }
+
 private:
 	TextureManager* m_manager;
 	std::array<sf::RenderTexture, 5> m_boardRender;
