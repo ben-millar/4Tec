@@ -19,14 +19,12 @@ void Gameplay::loadGame(GameType t_type)
 	case GameType::MEDIUM:
 	case GameType::HARD:
 		m_ai = new AI();
-		m_player.addObserver(_gm);
 		m_player.addObserver(m_ai);
 		break;
 	case GameType::CLIENT:
 		m_network = new Network();
 		m_network->client("192.168.8.148", 420);
 		m_network->addObserver(_gm);
-		m_player.addObserver(_gm);
 		m_player.addNetwork(m_network);
 		_gm->swapPlayers();
 		break;
@@ -35,13 +33,11 @@ void Gameplay::loadGame(GameType t_type)
 		m_network->host("192.168.8.148", 420);
 		m_network->addObserver(_gm);
 		m_player.addNetwork(m_network);
-		m_player.addObserver(_gm);
 		break;
 	case GameType::LOCAL:
 
 		break;
 	}
-
 	m_player.addObserver(_gm);
 }
 
