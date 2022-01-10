@@ -8,7 +8,7 @@ void Game::run()
 	_gm = GameManager::getInstance();
 	m_tokens = TokenManager::getInstance();
 
-	setupGame(GameType::LAN_HOST);
+	setupGame(GameType::AI);
 
 	loadFont();
 	loadTextures();
@@ -42,12 +42,6 @@ void Game::run()
 void Game::loadFont()
 {
 	m_robotoTTF.loadFromFile("assets/fonts/Roboto-Thin.ttf");
-
-	// FOR TESTING PURPOSES
-	//m_text.setFont(m_robotoTTF);
-	//m_text.setCharacterSize(96U);
-	//m_text.setString("[ESC] to close window");
-	//m_text.setPosition({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 }
 
 ////////////////////////////////////////////////////////////
@@ -134,9 +128,11 @@ void Game::render()
 
 void Game::setupGame(GameType t_type)
 {
+	m_player.addObserver(_gm);
+
 	switch (t_type)
 	{
-	case GameType::PVE:
+	case GameType::AI:
 		m_ai = new AI();
 		m_player.addObserver(m_ai);
 		break;
@@ -156,8 +152,6 @@ void Game::setupGame(GameType t_type)
 	default:
 		break;
 	}
-
-	m_player.addObserver(_gm);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

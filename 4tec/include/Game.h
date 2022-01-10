@@ -21,7 +21,7 @@ using namespace std;
 
 enum class GameType
 {
-	PVE,
+	AI,
 	LAN_CLIENT,
 	LAN_HOST
 };
