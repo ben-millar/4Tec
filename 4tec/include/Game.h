@@ -85,7 +85,7 @@ private:
 
 	sf::Shader m_shader;
 
-	GameManager* _gm;
+	GameManager* _gm{ nullptr };
 
 	Network* _network{ nullptr };
 

@@ -16,7 +16,14 @@ void Game::run()
 		_network = new Network();
 
 		if (NetworkType::CLIENT == _networkType)
-			_network->client("149.153.106.163", 420);
+		{
+			_network->client("149.153.106.162", 420);
+
+			render(); // Sneak in a draw call while we wait for the host
+
+			Move m = _network->tryRecv();
+			_gm->makeMove(m);
+		}
 		else
 			_network->host("149.153.106.163", 420);
 	}
@@ -102,7 +109,8 @@ void Game::processEvents()
 				m_window->close();
 				break;
 			case sf::Keyboard::R:
-				_gm->resetGame();
+				if (GameType::ONLINE != _gameType)
+					_gm->resetGame();
 				break;
 			default:
 				break;
