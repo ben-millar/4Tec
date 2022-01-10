@@ -24,16 +24,18 @@ void Gameplay::loadGame(GameType t_type)
 		break;
 	case GameType::CLIENT:
 		m_network = new Network();
-		m_player.addNetwork(m_network);
 		m_network->client("192.168.8.148", 420);
 		m_network->addObserver(_gm);
+		m_player.addObserver(_gm);
+		m_player.addNetwork(m_network);
 		_gm->swapPlayers();
 		break;
 	case GameType::HOST:
 		m_network = new Network();
-		m_player.addNetwork(m_network);
 		m_network->host("192.168.8.148", 420);
 		m_network->addObserver(_gm);
+		m_player.addNetwork(m_network);
+		m_player.addObserver(_gm);
 		break;
 	case GameType::LOCAL:
 

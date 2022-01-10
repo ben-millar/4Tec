@@ -120,7 +120,12 @@ void Network::waitForConnection(Network& t_caller)
 void Network::initThreads()
 {
 	if (m_recvThread.joinable())
+	{
+		static int count = 1;
+		std::cout << "Joinable: " << count << std::endl;
+		count++;
 		m_recvThread.join();
+	}
 	m_recvThread = std::thread(tryRecv, std::ref(*this));
 	m_recvThread.detach();
 }

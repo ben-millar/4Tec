@@ -19,7 +19,7 @@ void TokenManager::placePiece(Move t_move)
 	uint8_t layer, row, col;
 	std::tie(layer, row, col) = t_move;
 
-	m_boardRender[4].clear(sf::Color::Transparent);
+	//m_boardRender[4].clear(sf::Color::Transparent);
 	sf::Vector2u tx = 
 		m_manager->getTexture("board")->getSize();
 
