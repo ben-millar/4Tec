@@ -41,18 +41,21 @@ MainMenu::~MainMenu()
 
 void MainMenu::processEvents(sf::Event& t_event)
 {
-	if (t_event.type == sf::Event::KeyPressed)
+	if (t_event.type == sf::Event::MouseMoved)
 	{
+		sf::Vector2f pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*m_window));
 
 		if (m_tabButton)
-			m_tabButton->activate();
-	}
-	else if (t_event.type == sf::Event::MouseMoved)
-	{
-		sf::Vector2i pos = sf::Mouse::getPosition(*m_window);
+			if (!m_tabButton->getSprite().getGlobalBounds().contains(pos))
+			{
+				m_tabButton->loseFocus();
+				m_tabButton = nullptr;
+			}
+			
+
 		for (auto& btn : m_options)
 		{
-			if (btn->getSprite().getGlobalBounds().contains((sf::Vector2f)pos))
+			if (btn->getSprite().getGlobalBounds().contains(pos))
 				if (m_currentButton != btn)
 				{
 					if (m_currentButton)
@@ -65,7 +68,7 @@ void MainMenu::processEvents(sf::Event& t_event)
 		{
 			for (auto& btn : *m_currentTab)
 			{
-				if (btn->getSprite().getGlobalBounds().contains((sf::Vector2f)pos))
+				if (btn->getSprite().getGlobalBounds().contains(pos))
 					if (m_tabButton != btn)
 					{
 						if (m_tabButton)
