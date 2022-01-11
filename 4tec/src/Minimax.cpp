@@ -77,10 +77,12 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, Alp
 			{
 				if (shouldPrune(value, worst, t_ab, isMinimizer))
 					break;
+			}
 			else
 			{
 				if (shouldPrune(value, best, t_ab, isMinimizer))
 					break;
+			}
 		}
 
 		return isMinimizer
