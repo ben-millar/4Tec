@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <BoardManager.h>
+#include <TokenManager.h>
 #include <GameData.h>
 
 class GameManager
@@ -24,9 +25,14 @@ public:
 	Board* getCurrentPlayerBoard() { return &_currentPlayerTokens; }
 	Board* getGameBoard() { return &_gameBoard; }
 
+	sf::Sprite& getTokenSprite() { return _tokenManager.getSprite(); }
+
 private:
-	GameManager() {}
+	GameManager();
+
 	BoardManager _boardManager;
+	TokenManager _tokenManager;
+
 	Board _gameBoard, _currentPlayerTokens;
 	Player _currentPlayer{ Player::YELLOW };
 	bool _gameOver{ false };

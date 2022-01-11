@@ -10,11 +10,25 @@
 #include <GameManager.h>
 #include <Globals.h>
 #include <Input.h>
+#include <Network.h>
 #include <Minimax.h>
 #include <TextureManager.h>
-#include <TokenManager.h>
 
 using namespace std;
+
+enum class GameType
+{
+	LOCAL,
+	ONLINE,
+	AI,
+	AIvAI
+};
+
+enum class NetworkType
+{
+	HOST,
+	CLIENT
+};
 
 class Game
 {
@@ -72,8 +86,12 @@ private:
 
 	sf::Shader m_shader;
 
-	GameManager* _gm;
-	TokenManager m_tokens;
+	GameManager* _gm{ nullptr };
+
+	Network* _network{ nullptr };
+
+	GameType _gameType{ GameType::AI };
+	NetworkType _networkType{ NetworkType::CLIENT };
 };
 
 #endif
