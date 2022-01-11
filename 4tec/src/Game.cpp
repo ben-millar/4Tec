@@ -143,6 +143,21 @@ void Game::processEvents()
 					Move m = _network->tryRecv();
 					_gm->makeMove(m);
 				}
+				else if (GameType::AIvAI == _gameType)
+				{
+					while (true)
+					{
+						Board* b = _gm->getGameBoard();
+						Board* p = _gm->getCurrentPlayerBoard();
+
+						Move AIMove = Minimax::getInstance()->findMove(b, p);
+
+						if (!_gm->makeMove(AIMove))
+							break;
+
+						render();
+					}
+				}
 			}
 		}
 	}

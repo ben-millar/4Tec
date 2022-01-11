@@ -20,7 +20,8 @@ enum class GameType
 {
 	LOCAL,
 	ONLINE,
-	AI
+	AI,
+	AIvAI
 };
 
 enum class NetworkType
@@ -89,7 +90,7 @@ private:
 
 	Network* _network{ nullptr };
 
-	GameType _gameType{ GameType::ONLINE };
+	GameType _gameType{ GameType::AI };
 	NetworkType _networkType{ NetworkType::CLIENT };
 };
 
