@@ -2,8 +2,14 @@
 #include <iostream>
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
+	auto start = high_resolution_clock::now();
+
 	// Retrieve the board, discard the value
 	uint8_t move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
+
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<milliseconds>(stop - start);
+	cout << "Minimax took: " << duration.count() / 1000.f << "s.\n";
 
 	uint8_t layer, row, col;
 	layer = move_index / 16;
@@ -47,6 +53,9 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, Alp
 	vector<uint8_t> vm;
 	findValidMoves(t_board, vm);
 
+	if (vm.empty())
+		return MoveValuePair{-1,-1};
+
 	bool isMinimizer = t_depth % 2;
 
 	if (t_depth < MAX_DEPTH)
@@ -56,18 +65,24 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, Alp
 
 		for (uint8_t& index : vm)
 		{
+			// Set the move for the next layer
+			t_board.set(index, 1);
+			if (isMinimizer)
+				t_player.set(index, 1);
+
 			MoveValuePair value = minimax(t_board, t_player, t_depth + 1, t_ab);
 
+			// Unset the move
+			t_board.set(index, 0);
 			if (isMinimizer)
-			{
+				t_player.set(index, 0);
+
+			if (isMinimizer)
 				if (shouldPrune(value, best, t_ab, isMinimizer))
 					break;
-			}
 			else
-			{
 				if (shouldPrune(value, worst, t_ab, isMinimizer))
 					break;
-			}
 		}
 
 		return isMinimizer
@@ -99,8 +114,8 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 
 	for (auto& wl : _winningLines)
 	{
-		pCount = (t_player & *wl).count();				// Before move
-		oppCount = (opponent & *wl).count();			// Before move
+		pCount = (t_player & *wl).count();		// Before move
+		oppCount = (opponent & *wl).count();	// Before move
 		
 		// Ignore line if both players have tokens; unwinnable.
 		if (pCount && oppCount)

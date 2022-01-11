@@ -90,7 +90,7 @@ private:
 
 	Network* _network{ nullptr };
 
-	GameType _gameType{ GameType::AI };
+	GameType _gameType{ GameType::AIvAI };
 	NetworkType _networkType{ NetworkType::CLIENT };
 };
 
