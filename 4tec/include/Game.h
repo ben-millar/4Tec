@@ -16,20 +16,6 @@
 
 using namespace std;
 
-enum class GameType
-{
-	LOCAL,
-	ONLINE,
-	AI,
-	AIvAI
-};
-
-enum class NetworkType
-{
-	HOST,
-	CLIENT
-};
-
 class Game
 {
 public:

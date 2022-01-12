@@ -125,12 +125,7 @@ private:
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
 
-	enum class AIDifficulty
-	{
-		EASY = -1,
-		MEDIUM = 0,
-		HARD = 1
-	} _aiDifficulty{ AIDifficulty::EASY };
+	AIDifficulty _aiDifficulty{ AIDifficulty::EASY };
 };
 
 /// <summary>

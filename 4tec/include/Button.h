@@ -2,8 +2,10 @@
 #define BUTTON_INCLUDE
 
 #include <SFML/Graphics.hpp>
+#include <GameData.h>
+#include <functional>
 
-#include <FunctionPointer.h>
+class Game;
 
 class Button
 {
@@ -16,26 +18,7 @@ public:
 	Button(sf::Font& t_font, std::string t_buttonText) : m_text(t_buttonText, t_font, 58U), m_autoSelect(false) {};
 	~Button();
 
-	/// <summary>
-	/// Adds a function to the button where there are no arguments taken
-	/// This function can come from any class
-	/// </summary>
-	/// <typeparam name="T">Class the function comes from</typeparam>
-	/// <param name="t_caller">The object calling the function</param>
-	/// <param name="t_func">The Function</param>
-	template<typename T>
-	void addFunction(T* t_caller, std::function<void(T*)> t_func);
-
-	/// <summary>
-	/// Overloaded function that allows the button to call a function that accepts one arugment
-	/// </summary>
-	/// <typeparam name="T">Class Type</typeparam>
-	/// <typeparam name="U">Argument Type</typeparam>
-	/// <param name="t_caller">Object calling the function</param>
-	/// <param name="t_func">The function</param>
-	/// <param name="t_arg">The arugment for the function</param>
-	template<typename T, typename U>
-	void addFunction(T* t_caller, std::function<void(T*,U)> t_func, U t_arg);
+	void addFunction(Game* t_caller,std::function<void(Game*, GameType, NetworkType, AIDifficulty)> t_func, GameType t_gt, NetworkType t_nt, AIDifficulty t_ai);
 
 	/// <summary>
 	/// Gives a visual aid to show the button is highlighted
@@ -83,23 +66,15 @@ private:
 	/// <param name="t_pos"></param>
 	void centerText(sf::Vector2f t_pos);
 
-	FunctionPointer* m_func{nullptr};
+	std::function<void(Game*, GameType, NetworkType, AIDifficulty)> m_func;
+	GameType m_gameType;
+	NetworkType m_networkType;
+	AIDifficulty m_aiDifficulty;
+	Game* m_caller;
+
 	sf::Sprite m_sprite;
 	sf::Text m_text;
 	bool m_autoSelect;
 };
 
 #endif
-
-template<typename T>
-inline void Button::addFunction(T* t_caller, std::function<void(T*)> t_func)
-{
-	m_func = new Function<T>(t_caller, t_func);
-	m_autoSelect = true;
-}
-
-template<typename T, typename U>
-inline void Button::addFunction(T* t_caller, std::function<void(T*, U)> t_func, U t_arg)
-{
-	m_func = new FunctionArg<T,U>(t_caller, t_func, t_arg);
-}
