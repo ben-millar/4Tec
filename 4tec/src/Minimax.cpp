@@ -115,18 +115,22 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 		if (pCount && oppCount)
 			continue;
 
-		// If we have 3 tokens on this line, and our token completes the line
-		// we've won the game on this turn.
-		if (3 == pCount)
-			// We only initialise _pCount if we make it to this if condition
-			if (4 == (_pCount = ((t_move | t_player) & *wl).count()))
-				return 2147483647;
+		// 40% chance to miss a win, 60% chance to block opponent win on easy
+		if (AIDifficulty::EASY != _aiDifficulty || rand() % 100 < 60)
+		{
+			// If we have 3 tokens on this line, and our token completes the line
+			// we've won the game on this turn.
+			if (3 == pCount)
+				// We only initialise _pCount if we make it to this if condition
+				if (4 == (_pCount = ((t_move | t_player) & *wl).count()))
+					return 2147483647;
 
-		// If the opponent has 3 tokens on this line, and our token completes the line
-		// we've blocked an opponent win this turn.
-		if (3 == oppCount)
-			if (4 == ((t_move | opponent) & *wl).count())
-				return 1073741823;
+			// If the opponent has 3 tokens on this line, and our token completes the line
+			// we've blocked an opponent win this turn.
+			if (3 == oppCount)
+				if (4 == ((t_move | opponent) & *wl).count())
+					return 1073741823;
+		}
 
 		// Add a value for adding to a free line, skewed towards longer lengths
 		value +=

@@ -127,9 +127,10 @@ private:
 
 	enum class AIDifficulty
 	{
+		EASY = -1,
 		MEDIUM = 0,
 		HARD = 1
-	} _aiDifficulty{ AIDifficulty::MEDIUM };
+	} _aiDifficulty{ AIDifficulty::EASY };
 };
 
 /// <summary>
