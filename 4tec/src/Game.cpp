@@ -17,7 +17,7 @@ void Game::run()
 
 		if (NetworkType::CLIENT == _networkType)
 		{
-			_network->client("149.153.106.162", 420);
+			_network->client("149.153.106.163", 420);
 
 			render(); // Sneak in a draw call while we wait for the host
 

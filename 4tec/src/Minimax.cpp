@@ -47,32 +47,41 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, Alp
 	vector<uint8_t> vm;
 	findValidMoves(t_board, vm);
 
+	if (vm.empty())
+		return MoveValuePair{-1,-1};
+
 	bool isMinimizer = t_depth % 2;
 
-	if (t_depth < MAX_DEPTH)
+	if (t_depth < static_cast<int>(_aiDifficulty))
 	{
-		MoveValuePair best = { -1, 2147483647 };
-		MoveValuePair worst = { -1, -2147483647 };
+		MoveValuePair worst = { -1, 2147483647 };
+		MoveValuePair best = { -1, -2147483647 };
 
 		for (uint8_t& index : vm)
 		{
+			// Set the move for the next layer
+			t_board.set(index, 1);
+
 			MoveValuePair value = minimax(t_board, t_player, t_depth + 1, t_ab);
+
+			// Unset the move
+			t_board.set(index, 0);
 
 			if (isMinimizer)
 			{
-				if (shouldPrune(value, best, t_ab, isMinimizer))
+				if (shouldPrune(value, worst, t_ab, isMinimizer))
 					break;
 			}
 			else
 			{
-				if (shouldPrune(value, worst, t_ab, isMinimizer))
+				if (shouldPrune(value, best, t_ab, isMinimizer))
 					break;
 			}
 		}
 
 		return isMinimizer
-			? best
-			: worst;
+			? worst
+			: best;
 	}
 
 	Board move;
@@ -99,25 +108,29 @@ int Minimax::evaluate(Board& t_board, Board& t_player, Board& t_move)
 
 	for (auto& wl : _winningLines)
 	{
-		pCount = (t_player & *wl).count();				// Before move
-		oppCount = (opponent & *wl).count();			// Before move
+		pCount = (t_player & *wl).count();		// Before move
+		oppCount = (opponent & *wl).count();	// Before move
 		
 		// Ignore line if both players have tokens; unwinnable.
 		if (pCount && oppCount)
 			continue;
 
-		// If we have 3 tokens on this line, and our token completes the line
-		// we've won the game on this turn.
-		if (3 == pCount)
-			// We only initialise _pCount if we make it to this if condition
-			if (4 == (_pCount = ((t_move | t_player) & *wl).count()))
-				return 2147483647;
+		// 40% chance to miss a win, 60% chance to block opponent win on easy
+		if (AIDifficulty::EASY != _aiDifficulty || rand() % 100 < 60)
+		{
+			// If we have 3 tokens on this line, and our token completes the line
+			// we've won the game on this turn.
+			if (3 == pCount)
+				// We only initialise _pCount if we make it to this if condition
+				if (4 == (_pCount = ((t_move | t_player) & *wl).count()))
+					return 2147483647;
 
-		// If the opponent has 3 tokens on this line, and our token completes the line
-		// we've blocked an opponent win this turn.
-		if (3 == oppCount)
-			if (4 == ((t_move | opponent) & *wl).count())
-				return 1073741823;
+			// If the opponent has 3 tokens on this line, and our token completes the line
+			// we've blocked an opponent win this turn.
+			if (3 == oppCount)
+				if (4 == ((t_move | opponent) & *wl).count())
+					return 1073741823;
+		}
 
 		// Add a value for adding to a free line, skewed towards longer lengths
 		value +=

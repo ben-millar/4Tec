@@ -122,11 +122,15 @@ private:
 			: p2;
 	}
 
-	// Max depth we should traverse to
-	const int MAX_DEPTH{ 3 };
-
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
+
+	enum class AIDifficulty
+	{
+		EASY = -1,
+		MEDIUM = 0,
+		HARD = 1
+	} _aiDifficulty{ AIDifficulty::EASY };
 };
 
 /// <summary>
