@@ -56,11 +56,14 @@ bool BoardManager::isValid(Board& t_board, Move t_move)
 
 ////////////////////////////////////////////////////////////
 
-bool BoardManager::checkForWin(Board& t_board)
+bool BoardManager::checkForWin(Board& t_board, Board& t_win)
 {
 	for (auto& wl : _winningLines)
 		if (4 == (t_board & *wl).count())
+		{
+			t_win = *wl;
 			return true;
+		}
 
 	return false;
 }
