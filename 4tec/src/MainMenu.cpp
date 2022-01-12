@@ -86,7 +86,7 @@ void MainMenu::initOptions()
 
 	m_background.append({ {offset,offset},baseColor });
 	m_background.append({ {windowSize.x - offset,offset},baseColor });
-	m_background.append({ {windowSize.x - offset,(windowSize.y / 2) - offset},baseColor});
+	m_background.append({ {windowSize.x - offset,(windowSize.y / 2) - offset},baseColor });
 	m_background.append({ {offset,(windowSize.y / 2) - offset},baseColor });
 
 	m_background.append({ {offset,(windowSize.y / 2) + offset},baseColor });
@@ -95,7 +95,7 @@ void MainMenu::initOptions()
 	m_background.append({ {  offset,windowSize.y - offset},baseColor });
 
 	placeText(m_aiText, "AI", { windowSize.x / 2, offset });
-	placeText(m_localText, "Local", { windowSize.x / 2, windowSize.y /2 + offset });
+	placeText(m_localText, "Local", { windowSize.x / 2, windowSize.y / 2 + offset });
 
 	sf::Vector2f startPos{ windowSize.x / 2 - 150, offset + 40 };
 
@@ -122,6 +122,8 @@ Button* MainMenu::createButton(std::string t_name, GameType t_gt, NetworkType t_
 	t_pos.y += 110;
 	return btn;
 }
+
+////////////////////////////////////////////////////////////
 
 void MainMenu::placeText(sf::Text& t_text, std::string t_name, sf::Vector2f t_pos)
 {
