@@ -24,7 +24,7 @@ public:
 	/// </summary>
 	bool isValid(Board& t_board, Move t_move);
 
-	bool checkForWin(Board& t_board);
+	bool checkForWin(Board& t_board, Board& t_win);
 
 private:
 	void loadWinningLines();
