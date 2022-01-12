@@ -9,10 +9,7 @@
 
 #include <GameData.h>
 
-#include <chrono>
-
 using namespace std;
-using namespace std::chrono;
 
 // A pairing of board to value
 using MoveValuePair = pair<uint8_t, int>;

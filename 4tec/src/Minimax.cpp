@@ -2,14 +2,8 @@
 #include <iostream>
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
-	auto start = high_resolution_clock::now();
-
 	// Retrieve the board, discard the value
 	uint8_t move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
-
-	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<milliseconds>(stop - start);
-	cout << "Minimax took: " << duration.count() / 1000.f << "s.\n";
 
 	uint8_t layer, row, col;
 	layer = move_index / 16;
