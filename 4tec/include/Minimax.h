@@ -9,10 +9,7 @@
 
 #include <GameData.h>
 
-#include <chrono>
-
 using namespace std;
-using namespace std::chrono;
 
 // A pairing of board to value
 using MoveValuePair = pair<uint8_t, int>;
@@ -125,11 +122,14 @@ private:
 			: p2;
 	}
 
-	// Max depth we should traverse to
-	const int MAX_DEPTH{ 1 };
-
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
+
+	enum class AIDifficulty
+	{
+		MEDIUM = 0,
+		HARD = 1
+	} _aiDifficulty{ AIDifficulty::MEDIUM };
 };
 
 /// <summary>

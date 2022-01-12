@@ -2,14 +2,8 @@
 #include <iostream>
 Move Minimax::findMove(Board* t_board, Board* t_player)
 {
-	auto start = high_resolution_clock::now();
-
 	// Retrieve the board, discard the value
 	uint8_t move_index = minimax(*t_board, *t_player, 0, AlphaBeta()).first;
-
-	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<milliseconds>(stop - start);
-	cout << "Minimax took: " << duration.count() / 1000.f << "s.\n";
 
 	uint8_t layer, row, col;
 	layer = move_index / 16;
@@ -58,40 +52,36 @@ MoveValuePair Minimax::minimax(Board& t_board, Board& t_player, int t_depth, Alp
 
 	bool isMinimizer = t_depth % 2;
 
-	if (t_depth < MAX_DEPTH)
+	if (t_depth < static_cast<int>(_aiDifficulty))
 	{
-		MoveValuePair best = { -1, 2147483647 };
-		MoveValuePair worst = { -1, -2147483647 };
+		MoveValuePair worst = { -1, 2147483647 };
+		MoveValuePair best = { -1, -2147483647 };
 
 		for (uint8_t& index : vm)
 		{
 			// Set the move for the next layer
 			t_board.set(index, 1);
-			if (isMinimizer)
-				t_player.set(index, 1);
 
 			MoveValuePair value = minimax(t_board, t_player, t_depth + 1, t_ab);
 
 			// Unset the move
 			t_board.set(index, 0);
-			if (isMinimizer)
-				t_player.set(index, 0);
 
 			if (isMinimizer)
 			{
-				if (shouldPrune(value, best, t_ab, isMinimizer))
+				if (shouldPrune(value, worst, t_ab, isMinimizer))
 					break;
 			}
 			else
 			{
-				if (shouldPrune(value, worst, t_ab, isMinimizer))
+				if (shouldPrune(value, best, t_ab, isMinimizer))
 					break;
 			}
 		}
 
 		return isMinimizer
-			? best
-			: worst;
+			? worst
+			: best;
 	}
 
 	Board move;
