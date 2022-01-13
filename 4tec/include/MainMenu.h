@@ -61,6 +61,8 @@ private:
 
 	sf::VertexArray m_background;
 	
+	sf::Texture m_buttonTex;
+	sf::Vector2f m_buttonScale;
 	Button* m_currentButton;
 	std::vector<Button*> m_options;
 	sf::Font m_gameFont;
