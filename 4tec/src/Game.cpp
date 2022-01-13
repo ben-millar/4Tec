@@ -109,6 +109,10 @@ void Game::processEvents()
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
+			if (GameType::ONLINE == _gameType)
+				if (!_network->isConnected())
+					cerr << "Cannot play move, waiting for opponent to connect." << endl; return;
+
 			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
 
 			if (_gm->makeMove(move))
