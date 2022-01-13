@@ -61,6 +61,12 @@ public:
     /// </summary>
     void disconnect();
 
+    /// <summary>
+    /// Checks for an active connection on the network
+    /// </summary>
+    /// <returns>True if we're connected to a peer, false otherwise</returns>
+    bool isConnected() { return _hasActiveConnection; }
+
 protected:
 
     /// <summary>
@@ -74,5 +80,7 @@ protected:
     SOCKADDR_IN m_addr;
 
     std::thread m_connectThread;
+
+    static bool _hasActiveConnection;
 };
 #endif

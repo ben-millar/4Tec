@@ -40,12 +40,6 @@ void Game::run()
 void Game::loadFont()
 {
 	m_robotoTTF.loadFromFile("assets/fonts/Roboto-Thin.ttf");
-
-	// FOR TESTING PURPOSES
-	//m_text.setFont(m_robotoTTF);
-	//m_text.setCharacterSize(96U);
-	//m_text.setString("[ESC] to close window");
-	//m_text.setPosition({ WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f });
 }
 
 ////////////////////////////////////////////////////////////
@@ -98,7 +92,13 @@ void Game::processEvents()
 			switch (e.key.code)
 			{
 			case sf::Keyboard::Escape:
-				m_window->close();
+				if (m_mainMenu)
+					m_window->close();
+				else
+				{
+					m_mainMenu = new MainMenu(this, &Game::launchGame, m_robotoTTF);
+					_gm->resetGame();
+				}
 				break;
 			case sf::Keyboard::R:
 				if (GameType::ONLINE != _gameType)
@@ -109,6 +109,13 @@ void Game::processEvents()
 			}
 		else if (e.type == sf::Event::MouseButtonPressed)
 		{
+			if (GameType::ONLINE == _gameType)
+				if (!_network->isConnected())
+				{
+					cerr << "Cannot play move, waiting for opponent to connect." << endl;
+					return;
+				}
+
 			Move move = Input::calculateBoardPiece(sf::Mouse::getPosition(*m_window));
 
 			if (_gm->makeMove(move))

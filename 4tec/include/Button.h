@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="t_font">Font for the button</param>
 	/// <param name="t_buttonText">What the button will show</param>
-	Button(sf::Font& t_font, std::string t_buttonText) : m_text(t_buttonText, t_font, 50U), m_autoSelect(false) {};
+	Button(sf::Font& t_font, std::string t_buttonText);
 	~Button();
 	void addFunction(Game* t_caller,std::function<void(Game*, GameType, NetworkType, AIDifficulty)> t_func, GameType t_gt, NetworkType t_nt, AIDifficulty t_ai);
 
@@ -52,6 +52,11 @@ public:
 	/// <param name="t_window">Window to draw the button to</param>
 	void render(sf::RenderWindow* t_window);
 
+	/// <summary>
+	/// Sets the scale of the button
+	/// </summary>
+	/// <param name="t_scale">Absolute scale of the button, where {1,1}
+	/// is the default sprite size, and {0.5,0.5} is half the sprite size </param>
 	void setScale(sf::Vector2f t_scale);
 
 	/// <summary>
@@ -71,6 +76,7 @@ private:
 	NetworkType m_networkType;
 	AIDifficulty m_aiDifficulty;
 	Game* m_caller;
+	sf::Texture m_texture;
 	sf::Sprite m_sprite;
 	sf::Text m_text;
 	bool m_autoSelect;

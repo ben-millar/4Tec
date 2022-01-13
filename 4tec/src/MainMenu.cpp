@@ -65,6 +65,7 @@ void MainMenu::render(sf::RenderWindow* t_window)
 	t_window->draw(m_background);
 	t_window->draw(m_aiText);
 	t_window->draw(m_localText);
+
 	for (Button* btn : m_options)
 		btn->render(t_window);
 
@@ -146,7 +147,7 @@ Button* MainMenu::createButton(std::string t_name, GameType t_gt, NetworkType t_
 	tex.create(300, 100);
 	Button* btn = new Button(m_gameFont, t_name);
 	btn->addFunction(m_gameCaller, m_launchGame, t_gt, t_nt, t_ai);
-	btn->setTexture(tex);
+
 	btn->setScale(m_buttonScale);
 	btn->setPosition(t_pos);
 	return btn;

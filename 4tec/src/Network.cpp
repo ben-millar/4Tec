@@ -1,5 +1,7 @@
 #include <Network.h>
 
+bool Network::_hasActiveConnection = false;
+
 Network::~Network()
 {
     disconnect();
@@ -94,6 +96,7 @@ Move Network::tryRecv()
 void Network::disconnect()
 {
     closesocket(m_socket);
+    _hasActiveConnection = false;
 }
 
 //*****************************************************************************
@@ -106,5 +109,6 @@ void Network::waitForConnection(Network& t_caller)
     if (t_caller.m_socket)
     {
         std::cout << "Client Connected!\n";
+        _hasActiveConnection = true;
     }
 }
