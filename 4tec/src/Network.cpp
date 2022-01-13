@@ -59,7 +59,9 @@ try
     m_addr.sin_family = AF_INET;
 
     m_socket = socket(AF_INET, SOCK_STREAM, 0);
-    connect(m_socket, (SOCKADDR*)&m_addr, sizeof(m_addr));
+
+    if (SOCKET_ERROR != connect(m_socket, (SOCKADDR*)&m_addr, sizeof(m_addr)))
+        _hasActiveConnection = true;
 }
 catch (std::exception& e)
 {
