@@ -62,11 +62,22 @@ void Button::render(sf::RenderWindow* t_window)
 
 ////////////////////////////////////////////////////////////
 
+void Button::setScale(sf::Vector2f t_scale)
+{
+	m_sprite.setScale(t_scale);
+	if (t_scale.x >= 0.75)
+		m_text.setCharacterSize(45U);
+	else
+		m_text.setCharacterSize(32U);
+}
+
+////////////////////////////////////////////////////////////
+
 void Button::centerText(sf::Vector2f t_pos)
 {
-	sf::FloatRect boxSize = m_sprite.getGlobalBounds();
+	sf::Vector2f boxSize = { m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().height };
 	sf::FloatRect textSize = m_text.getGlobalBounds();
-	float centerX = t_pos.x + (boxSize.width / 2) - (textSize.width / 2);
-	float centerY = t_pos.y + (boxSize.height / 2) - (textSize.height / 2);
+	float centerX = t_pos.x + (boxSize.x / 2) - (textSize.width / 2);
+	float centerY = t_pos.y + (boxSize.y / 2) - (textSize.height / 2);
 	m_text.setPosition(centerX, centerY);
 }

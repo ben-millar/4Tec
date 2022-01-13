@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="t_font">Font for the button</param>
 	/// <param name="t_buttonText">What the button will show</param>
-	Button(sf::Font& t_font, std::string t_buttonText) : m_text(t_buttonText, t_font, 58U), m_autoSelect(false) {};
+	Button(sf::Font& t_font, std::string t_buttonText) : m_text(t_buttonText, t_font, 50U), m_autoSelect(false) {};
 	~Button();
 	void addFunction(Game* t_caller,std::function<void(Game*, GameType, NetworkType, AIDifficulty)> t_func, GameType t_gt, NetworkType t_nt, AIDifficulty t_ai);
 
@@ -51,6 +51,8 @@ public:
 	/// </summary>
 	/// <param name="t_window">Window to draw the button to</param>
 	void render(sf::RenderWindow* t_window);
+
+	void setScale(sf::Vector2f t_scale);
 
 	/// <summary>
 	/// Allows the modification of the sprite outside the class
