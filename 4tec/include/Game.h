@@ -11,24 +11,11 @@
 #include <Globals.h>
 #include <Input.h>
 #include <Network.h>
+#include <MainMenu.h>
 #include <Minimax.h>
 #include <TextureManager.h>
 
 using namespace std;
-
-enum class GameType
-{
-	LOCAL,
-	ONLINE,
-	AI,
-	AIvAI
-};
-
-enum class NetworkType
-{
-	HOST,
-	CLIENT
-};
 
 class Game
 {
@@ -70,6 +57,9 @@ public:
 	void render();
 
 private:
+
+	void launchGame(GameType, NetworkType, AIDifficulty);
+
 	/// <summary>
 	/// Creates an sf::RenderWindow on the stack
 	/// </summary>
@@ -92,6 +82,8 @@ private:
 
 	GameType _gameType{ GameType::AI };
 	NetworkType _networkType{ NetworkType::CLIENT };
+
+	MainMenu* m_mainMenu;
 };
 
 #endif

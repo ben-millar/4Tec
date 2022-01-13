@@ -44,6 +44,10 @@ public:
 	/// <returns>The optimal move as a Move(layer, row, col)</returns>
 	Move findMove(Board* t_board, Board* t_player);
 
+	void setDifficulty(AIDifficulty t_difficulty) {
+		_aiDifficulty = t_difficulty;
+	}
+
 private:
 	/// <summary>
 	/// Simple data structure for alpha/beta pruning
@@ -125,12 +129,7 @@ private:
 	// An array of bitsets, each representing a winning line on the game board
 	std::array<Board*, 76> _winningLines;
 
-	enum class AIDifficulty
-	{
-		EASY = -1,
-		MEDIUM = 0,
-		HARD = 1
-	} _aiDifficulty{ AIDifficulty::EASY };
+	AIDifficulty _aiDifficulty{ AIDifficulty::EASY };
 };
 
 /// <summary>
