@@ -44,6 +44,10 @@ public:
 	/// <returns>The optimal move as a Move(layer, row, col)</returns>
 	Move findMove(Board* t_board, Board* t_player);
 
+	void setDifficulty(AIDifficulty t_difficulty) {
+		_aiDifficulty = t_difficulty;
+	}
+
 private:
 	/// <summary>
 	/// Simple data structure for alpha/beta pruning

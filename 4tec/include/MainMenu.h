@@ -8,8 +8,6 @@
 #include <vector>
 #include <GameData.h>
 
-using Tab = std::vector<Button*>;
-
 class MainMenu
 {
 public:
@@ -37,40 +35,40 @@ public:
 	void render(sf::RenderWindow* t_window);
 
 private:
-	void initOptions(sf::Font&, sf::Vector2f);
+	/// <summary>
+	/// Setup all the options on the menu
+	/// </summary>
+	void initOptions();
 
 	/// <summary>
-	/// Shows the user the difficulties and allows them to start the game 
+	/// Function to simplify the creation + setup of a button
 	/// </summary>
-	void showAITab();
+	/// <param name="name"> Name the button displays</param>
+	/// <param name="gameType">Parameter to pass to the function</param>
+	/// <param name="NetworkType">Parameter to pass to the function</param>
+	/// <param name="AIDifficulty">Parameter to pass to the function</param>
+	/// <param name="Pos"> where to place the button</param>
+	/// <returns></returns>
+	Button* createButton(std::string, GameType, NetworkType, AIDifficulty, sf::Vector2f&);
 
 	/// <summary>
-	/// Shows the user that starting the game will run a local game 
+	/// Function to simplify the placing of a text object
 	/// </summary>
-	void showLocalTab();
-
-	/// <summary>
-	/// Allows the user to pick host or client
-	/// </summary>
-	void showNetworkTab();
-
-	Button* createButton(std::string, GameType, NetworkType, AIDifficulty, sf::Vector2f);
+	/// <param name="Text">Object to be placed</param>
+	/// <param name="name">What the text shows</param>
+	/// <param name="pos">Where the text is placed</param>
+	void placeText(sf::Text&,std::string, sf::Vector2f);
 
 	sf::VertexArray m_background;
-	std::array<Button*, 3> m_options;
-	Tab* m_currentTab;
-	Tab m_AI;
-	Tab m_local;
-	Tab m_network;
+	
 	Button* m_currentButton;
-	Button* m_tabButton;
+	std::vector<Button*> m_options;
 	sf::Font m_gameFont;
+	sf::Text m_aiText;
+	sf::Text m_localText;
 
 	Game* m_gameCaller;
 	std::function<void(Game*, GameType, NetworkType, AIDifficulty)> m_launchGame;
-
-	float m_screenToButtonWidth{ 4.0f / 9.0f };
-	float m_offset{ 10.0f };
 };
 
 #endif

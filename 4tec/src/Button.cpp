@@ -17,21 +17,14 @@ void Button::addFunction(Game* t_caller, std::function<void(Game*, GameType, Net
 
 void Button::gainFocus()
 {
-	sf::Color color = (m_autoSelect) ?
-		sf::Color(150U, 150U, 150U, 255U) :
-		sf::Color(200U, 200U, 200U, 255U);
-	m_sprite.setColor(color);
-	if (m_autoSelect)
-		m_sprite.setScale({ 1.5f,1.0f });
+	m_sprite.setColor(sf::Color(150U, 150U, 150U, 255U));
 }
 
 ////////////////////////////////////////////////////////////
 
 void Button::loseFocus()
 {
-	m_sprite.setColor(sf::Color(100U, 100U, 100U, 255U));
-	if (m_autoSelect)
-		m_sprite.setScale({ 1.0f,1.0f });
+	m_sprite.setColor(sf::Color(125U, 125U, 125U, 255U));
 }
 
 ////////////////////////////////////////////////////////////
@@ -39,7 +32,7 @@ void Button::loseFocus()
 void Button::setTexture(sf::Texture& t_texture)
 {
 	m_sprite.setTexture(t_texture);
-	m_sprite.setColor(sf::Color(100U, 100U, 100U, 255U));
+	m_sprite.setColor(sf::Color(125U, 125U, 125U, 255U));
 }
 
 ////////////////////////////////////////////////////////////

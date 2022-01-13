@@ -28,8 +28,9 @@ enum class AIDifficulty
 
 enum class NetworkType
 {
-	HOST,
-	CLIENT
+	NONE=-1,
+	HOST=0,
+	CLIENT=1
 };
 
 enum class Player : uint8_t

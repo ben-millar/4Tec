@@ -5,28 +5,13 @@ void Game::run()
 	m_window = createWindow("AI | 4Tec");
 	m_window->setKeyRepeatEnabled(false);
 
+
 	loadFont();
 	loadTextures();
 	loadShader();
 
+	m_mainMenu = new MainMenu(this, &Game::launchGame,m_robotoTTF);
 	_gm = GameManager::getInstance();
-
-	if (GameType::ONLINE == _gameType)
-	{
-		_network = new Network();
-
-		if (NetworkType::CLIENT == _networkType)
-		{
-			_network->client("149.153.106.163", 420);
-
-			render(); // Sneak in a draw call while we wait for the host
-
-			Move m = _network->tryRecv();
-			_gm->makeMove(m);
-		}
-		else
-			_network->host("149.153.106.163", 420);
-	}
 
 	sf::Clock clock;
 	sf::Time lag = sf::Time::Zero;
@@ -102,7 +87,14 @@ void Game::processEvents()
 	{
 		if (e.type == sf::Event::Closed)
 			m_window->close();
-		else if (e.type == sf::Event::KeyPressed)
+
+		if (m_mainMenu)
+		{
+			m_mainMenu->processEvents(e, m_window);
+			continue;
+		}
+
+		if (e.type == sf::Event::KeyPressed)
 			switch (e.key.code)
 			{
 			case sf::Keyboard::Escape:
@@ -173,6 +165,12 @@ void Game::update(sf::Time t_dTime)
 
 void Game::render()
 {
+	if (m_mainMenu)
+	{
+		m_mainMenu->render(m_window);
+		return;
+	}
+
 	m_window->clear(sf::Color::Black);
 
 	m_window->draw(m_boardSprite, &m_shader);
@@ -180,6 +178,36 @@ void Game::render()
 	m_window->draw(_gm->getTokenSprite(), &m_shader);
 
 	m_window->display();
+}
+
+////////////////////////////////////////////////////////////
+
+void Game::launchGame(GameType t_gameType, NetworkType t_networkType, AIDifficulty t_aiDifficulty)
+{
+	delete m_mainMenu;
+	m_mainMenu = nullptr;
+
+	_gameType = t_gameType;
+	_networkType = t_networkType;
+
+	Minimax::getInstance()->setDifficulty(t_aiDifficulty);
+
+	if (GameType::ONLINE == _gameType)
+	{
+		_network = new Network();
+
+		if (NetworkType::CLIENT == _networkType)
+		{
+			_network->client("149.153.106.163", 420);
+
+			render(); // Sneak in a draw call while we wait for the host
+
+			Move m = _network->tryRecv();
+			_gm->makeMove(m);
+		}
+		else
+			_network->host("149.153.106.163", 420);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
