@@ -96,6 +96,7 @@ void MainMenu::initOptions()
 
 	placeText(m_aiText, "AI", { windowSize.x / 2, offset });
 	placeText(m_localText, "Local", { windowSize.x / 2, windowSize.y / 2 + offset });
+	placeText(m_localText, "Local", { windowSize.x / 2, windowSize.y /2 + offset });
 
 	sf::Vector2f startPos{ windowSize.x / 2 - 150, offset + 40 };
 

@@ -8,7 +8,6 @@
 #include <vector>
 #include <GameData.h>
 
-
 class MainMenu
 {
 public:
