@@ -95,7 +95,10 @@ void Game::processEvents()
 				if (m_mainMenu)
 					m_window->close();
 				else
+				{
 					m_mainMenu = new MainMenu(this, &Game::launchGame, m_robotoTTF);
+					_gm->resetGame();
+				}
 				break;
 			case sf::Keyboard::R:
 				if (GameType::ONLINE != _gameType)

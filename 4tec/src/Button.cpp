@@ -1,8 +1,15 @@
 #include <Button.h>
 
-Button::~Button()
+Button::Button(sf::Font& t_font, std::string t_buttonText) :
+	m_text(t_buttonText, t_font, 50U), m_autoSelect(false)
 {
+	m_texture.loadFromFile("assets/images/Button.png");
+	setTexture(m_texture);
 }
+
+////////////////////////////////////////////////////////////
+
+Button::~Button() {}
 
 ////////////////////////////////////////////////////////////
 
@@ -14,6 +21,8 @@ void Button::addFunction(Game* t_caller, std::function<void(Game*, GameType, Net
 	m_aiDifficulty = t_ai;
 	m_caller = t_caller;
 }
+
+////////////////////////////////////////////////////////////
 
 void Button::gainFocus()
 {
@@ -32,7 +41,7 @@ void Button::loseFocus()
 void Button::setTexture(sf::Texture& t_texture)
 {
 	m_sprite.setTexture(t_texture);
-	m_sprite.setColor(sf::Color(125U, 125U, 125U, 255U));
+	loseFocus();
 }
 
 ////////////////////////////////////////////////////////////
